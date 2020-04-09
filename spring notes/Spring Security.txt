@@ -1,0 +1,88 @@
+1.	spring security provides you authentication, authorization etc.
+
+2.	Just by adding spring starter security dependency it provides default login logout functionality.
+	it does it with the help of filters.
+
+3.	WebSecurityConfigurerAdapter class used to configure security features.
+
+4.	@EnableWebSecurity to enable security.
+
+5.	UserDetailsService Interface is used to call user details.
+	It have loadUserByUsername that provides userdetails from db or in memory db and return UserDetails returntype value.
+	
+6.	UserDetails interface provides function like authentication,authorization and other features.
+
+7.	there are 5 core concept of spring security:-
+	1-Authentication -	basically it defines the id of a user whether a valid user or not.
+		a- Knowledge based authentication - username password type validation.
+		b- possession based authentication - otp type validation.
+		c- Multi factor authentication - combination or a and b.
+	2-Authorization - checks whether a valid user is allowed to access perticular feature or not.	
+	3-Principal -	The current logged in user.
+	4-Granted Authority -	authorization is done based or granted authority. whether user have authority to do perticular thing or not.
+	5-Roles -	it defines the roles like admin,user,guest etc which helps to defines the authorities.
+
+8.	Default behavior or spring security:-
+		1-	adds mandatory authentication for URLs.
+		2-	adds login form
+		3-	handles login error
+		4-	creates a user and sets a default password.
+		
+9.	Spring has Authentication manager that authenticate user.
+	It uses builder pattern. We cant directly access Authentication manager so we work with AuthenticationManagerBuilder class.
+	
+10.	the way we intract with AuthenticationManagerBuilder is by a method called configure which has AuthenticationManagerBuilder as an parameter.
+
+11.	configure method is inside WebSecurityConfigurerAdapter abstract class you need to extend it in order to override configure method.
+
+12.	HttpSecurity is used for different type of permission and authentication.
+	configure method takes HttpSecurity as parameter to this purpose, you can override configure method.
+	
+13.	AuthenticationProvider have method called authenticate() that checks whether user is authenticated or not.
+	it can be of any type password based, oauth based, LDAP based etc.
+
+14.	AuthenticationManager handles such types and map to equivalent AuthenticateProvider.
+
+15.	UserDetailsService is a interface that have method called loadUserByUsername that takes username and gives object with user details.
+
+16.	user is verfied via  authentication filter that takes user credentials that goes to AuthenticationManager which navigates to proper AuthenticateProvider
+	provider checks UserDetailsService and if user is valid it returns the principal.
+	
+17.	this principal is stored in a thread local object.
+
+18.	One more way to of authentication LDAP stands for LightWeight Directory Access Protocol used to accessing and maintaining information.
+	It stores information and also helps with authentication.
+	
+19.	it stores info inside ldif i.e ldap data interchange formate.
+
+20. ldif stores user info with base dn i.e dc=springframework,dc=org
+	that we configure in application.properties file.
+	
+21.	Another way is JWT i.e JSON Web Tokens, http is stateless if you only hit url and try to hit another url another time it wont know who u are.
+	for that purpose we need JWT.
+	
+22.	previously a shared cache is maintained between multiple web app or services but if shared cache fails everything fails.
+
+23.	then we have concept of sticky sessions i.e load balancer maintains the session.
+	session tokens contains reference token while json tokens contains value token.
+
+24.	every user have signed json token that is validated at server side.
+
+25.	JWT is divided into 3 parts
+	1.	Header
+	2.	Payload
+	3.	Signature
+	
+26.	JWT is used for authorization not for authentication you can authenticate using any type.
+
+27.	when user login server generates one JWT and gives back that JWT to user.
+	user further can store this JWT anywhere he wants (eg. local storage, cookie).
+	
+28.	user have to use this JWT for further intraction using http header.
+	server verifies this JWT and decide weather to permit or not.
+	
+29.	there are some disadvantages of using jwt i.e if anyone else have your jwt they can use anything that you can use.
+
+30.	we need to carefull with jwt transmission. also you need to inform server that my jwt is stolen so that they put your jwt in invalid jwt list.
+
+31.	

@@ -1,0 +1,146 @@
+1.	Disadvantages of monolithic applications:-
+	a.	difficult to deploy big application.
+	b.	scalability
+	and many more...
+	
+2.	microservice is way to break monolithic application into small standalone independent services that talk to each other and act as single service for user.
+	and they all are deploy individually on server.
+
+3.	advantages of microservices:-
+	a.	deployement flexibility
+	b.	technology flexibility
+	c.	can be scaled separately.
+	and many more...
+	
+4.	disadvantages of microservices:-
+	a.	deployement/architecture complexity.
+	b.	service discovery.
+	and many more...
+
+5.	point to remember :- we should not return list in api call because in future if requirement changes and some other service requires object on call		
+	you need to change it and your code breakes for those who are consuming api for List. Its better to use Object Wrapper and List as a part of that wrapper
+	so that it will be backword compatible in future.
+	
+6.	RestTemplates are thread safe and hence one call cannot affect another call.
+
+7.	We can use webclient instead of RestTemplates that support both sync and async calls.
+
+8.	Service discovery:-
+	1-	client side service discovery:- client checks for service on discovery server and then calls the service. like checks phonebook and then call the number.
+	2-	server side service discovery:-	client call server to call service and server calls that service.
+	
+9.	Spring cloud uses client side service discovery and it uses Eureka for this or we can configure some other technology.
+
+10.	the discovery server is our Eureka server and all services will act as eureka client and also the cleint is also a eureka client.
+
+11. even eureka server consider itself as eureka client and hence you need to prevent server from registering itself or from other eureka servers
+	at application.properties file. It is useful when you need multiple instance of servers.
+
+12.	by default eureka client search for eureko server default port address but we can also configure it. 
+
+13.	@LoadBalanced does the service discovery. it does client side service discovery but library is doing everything for us so it look like server side discovery.
+	it also does client side load balancing i.e if you run same service on 2 different port both will get registered to eureko i.e 2 instances created.
+	it picks any out of 2 depend upon load.
+
+14.	DiscoveryClient class is used to get instance of any client based on service id.
+
+15.	Eureka server by default keep checking weather client is alive or not. if it doesnt get ping from any client it deregister it.
+
+16. by default eureka cached everything so if eureka server goes down you will get answer from cache.
+
+17.	fault tolerance means what tolerance of your system for a perticular fault i.e how a single fault can you affect your system (few service will go down
+	, all services go down or something etc)
+
+18.	Resilience means how many fault your system can tolerate.
+
+19.	if your one service is down rest dependent services will fail to work so one way is to make multiple instance of services i.e run one service or multiple ports.
+	so that if one goes down another services still works.(@LoadBalanced will take care of multiple instance registry and discovery).
+	
+20.	if a microservice is slow it may cause other services become slow even they are independent of each other as there might be some other service consuming both
+	and there is alot of thread waiting for response from slow microservice causing increase waiting time and maybe maximum limit is reached for new thread creation.
+	
+21.	so one solution to these problem is timeout, we can create timeout for each thread, after given time if that thread doesnt respond it will get destroyed.
+	it is not an ideal solution as still another service may get slow due to limit i.e what if request are coming much faster.
+
+22.	in any fault tolerance situation what we need to do is :-
+	-detect what is wrong
+	-take temporary steps to avoid the situation getting worse
+	-deactivate the problem component so that it doesnt affect downstream components.
+	
+23.	circuit breaker pattern implements above solution  and this is the prefered way to solve slow down problem.
+	paramter to set for circuit to be trip:-
+		-Last n requests to consider for the decision(5 requests)
+		-how many times of those should fail? (2 requests fails)
+		-timeout duration (3 sec for each request)
+	parameter to set for circuit to be back :-
+		-how long after a circuit to try again (5 sec after circuit breaks).
+		
+24.	we need some fallback when circuit is break to respond something for any request for that service
+	-throw an error
+	-return a fallback "default" response.
+	-save previous responses in cache and use that when possible.
+	
+25.	Hystrix is a open source library that implements the circuit breaker pattern.
+	you need to add spring-cloud-starter-netflix-hystrix dependency, add @EnableCircuitBreaker annotation to service where you want circuit breaker,
+	@HystrixCommand annotation to function where you want circuit to be break on matching parameters and configure hystric behavior for circuit break.
+	
+26.	we add a fallbackMethod to @HystrixCommand annotation telling that use fallbackMethod when circuit breaks.
+	without adding any behavior default behavior works i.e if any called service down it will call fallBackMethod.
+	
+27.	Hystrix wraps your API class to a proxy class so anyone calls the API class instead if class instance it will get proxy instance and keeps on checking	
+	if something gone wrong it will redirect to fallback method.28.
+	
+28.	if a external service calling a function inside class than proxy class instance will intercept and gives fallback if fails but if function inside class
+	is calling another function that proxy class cant do anything and hence @HystrixCommand wont work so we need put those methods to some another class and
+	autowired them so that proxy instance can intercept that class for method and @HystrixCommand will work.
+	
+29.	you can use @EnableHystrixDashboard with hystrixdashboard dependency and properties in application.properties file
+	to enables dashboard that tells status of circuits. and check status on  localhost:portnumber/hystrix
+	and checks your app status http://localhost:portNumber/actuator/hystrix.stream inside dashboard.
+
+30.	one more way to handle such slow microservice problem is bulkhead Pattern, in this you create different thread pool for services being called so if one	
+	service is slow his pool is full of request but it wont affect other services as they have different thread pool.
+	
+31.	in bulkhead is inside @HystrixCommand you need to define 2 things
+	1- threadPoolKey - a key for that function
+	2- threadPoolProperties that defines 2 properties:-
+		-coreSize(max size of thread pool)
+		-maxQueueSize(maximum number of request can wait in queue)
+
+32.	there are some features which are common for all microservices like authentication, authorization, fault tolerance etc. in order save code duplication
+	these features are to be implemented at API gateway level, all levels must pass through this gateway.
+
+33.	spring cloud provides zuul as api gateway for routing and filtering various features.
+
+34.	12 factors for cloud native application development
+		1.	codebase :- managing code in non prod environment and prod environment i.e version control(GIT).
+	
+		2.	managing dependencies :- multiple application should not share single dependencies base. each application have their own dependency base.
+									i.e each application have thier own pom.xml file in local and in prod environment.
+									
+		3.	application configuration :- configuring application specific to environment. common strategy should be used for managing config values.
+										else it's hard even with version control to find error. make your config exeternalize.
+										
+		4.	backing service :- there should be any service that act as a backing service to other services. so that you just need to swap latest updated services
+								instead of stop service and add changes and then deploy again.
+							
+		5.	CI/CD :- implement CI/CD so that you do not have to reapeat steps over and again.
+	
+		6.	Running process(Stateless Processes):- one should not rely on in memory storage thats a violation of 12 factor development. 
+													one should use db or cache, even using sticky sessions are also violation.
+							
+		7.	port binding :- use frameworks for port binding between different services or application. use appropriate dependencies. so that you can use any service
+							or application in your local system of third party without VM's.
+							
+		8.	Scaling with process(Concurrency) :- horizontal scaling (add more machine or server) instead of vertical scaling(add more power like cpu , ram).
+													break application into small pieces and scale them as needed istead of scaling	whole application.
+						
+		9.	disposable process :- your application should be easily disposable as crash or some other reason may happen, faster start and shut down helps to increase
+									scalability.	
+								
+		10.	Environment uniformity :- non prod and prod code should be in sync as far as possible. process and people should remain same.
+	
+		11. logs :- use proper logs to log output. it is critical for many purpose.
+	
+		12.	Administering :- tasks like database migration or executing one-off scripts in the environment. 
+								To avoid messing with the database, use the tooling you built alongside your app to go and check the database.

@@ -1,0 +1,31 @@
+1.	Scala works on JVM same as Java so internal working is same.
+
+2.	It is combination of both i.e OOP and functional programming.
+
+3.	scala dont have premetive data type, all types are class type ex. Int is also a class in scala.
+
+4.	you can declare variable using var or val. var is mutable while val is immutable it is constant.
+
+5.	you can define function using def ex. def func(){}.
+
+6.	here we dont have arithmetic operators, instead we have function that means here + is also a function.
+	8+7 and 8.+(7) results into 15. here 8 is object, . is operator, + is function and 7 is parameter to function.
+	object.function(parameter).
+
+7.	In scala we have case class which is like a normal class which is immutable have some benifits like:-
+		-gives a factory method with same class name and same parameter so that we can create object without new keyword.
+		-by default it takes val as type for variable in contructor if we dont define.
+		-it adds Default Implementation” to toString, hashCode and equals and copy methods.
+
+8.	Unit type is like void when nothing is returned.
+
+9.	here you can overload operator as mentioned those are functions only you can overload them.
+
+10.	in order to handle concurrency in scala by default almost everything is immutable i.e Int , List, Array etc.
+
+11.	like java have Object type as top data type in scala we have "Any" type if we dont define anything futher it have AnyVal
+	and AnyRef.
+	AnyVal- Integer,boolean,char
+	AnyRef-	Collections,String,Classes
+	
+12.	

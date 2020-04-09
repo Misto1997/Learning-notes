@@ -1,0 +1,96 @@
+1.	Spring provides many features like POJO,Dependencies Injection,MVC,REST etc and it can be easily integrated with other frameworks like hibernate and strut.
+
+2.	Spring boot provides you dependencies, configuration and embedded server(Tomcat) so that you can easily work with Spring without worrying much.
+
+3.	Dependency Injection (DI) is a design pattern that removes the dependency from the programming code so that it can be easy to manage and test the application. 
+	Dependency Injection makes our programming code loosely coupled(ex. Student ob= new Student())// this is tight coupled and it is hard to change 
+	code on modification. so we use below 2 ways to make it loosely coupled.
+	Spring framework provides two ways to inject dependency:-
+		a->By Constructor (ex.	Employee(Address address){  this.address=address;  })
+		b->By Setter method (ex. public void setAddress(Address address){  this.address=address;  } )
+		
+4.	Inside JVM we have a spring container and object inside this container called spring bean and when we write :-
+	ConfigurableApplicationContext context=SpringApplication.run(SpringLearningApplication.class, args);
+	it instantiate object of class to which we have given annotaion with @Component and it is available in container and you can fetch object of it when you use
+	Alien a=context.getBean(Alien.class);
+	
+5.	It follows a singleton design pattern so even if you create object of same class many times it will give you one object only.
+	and if you want many objects on demand you need to define another annotation in your class i.e @Score(value="prototype").
+	it creates object only on calling getBean unlike in singleton creates object on creating object of ConfigurableApplicationContext.
+	
+6.	and basically it is done to build dependencies injection so that it would be loosely coupled.
+
+7.	after creating object of a class if you want to use that class variable and methods inside another class you not need to instantiate the object again with
+	new keyword you can use simply by using annotaion @Autowired. it searches the object in container and provides you if available by type and
+	@Qualifier("name")  searches the object in container and provides you if available by name defined by you in @Container("ObjectName");
+	
+8.	In Spring web app if you are creating a controller class you need to add annotation i.e @Controller to define that it is a controller class.
+	we have a dispatcher servlet that is doing configuration for you for mapping the request, you just need to use annotation i.e @RequestMapping("requestName")
+	it will call the function written below this annotation. and return "pageName" will gives you that pages data in browser.
+
+9.	Spring boot have auto configuration that searches any specific page for you. for jsp page (it should be inside src/main/webapp) or you need to configure 
+	setting for	another path if you want and for controller (it should in source package/package/) along with your spring main class file or you need to configure 
+	setting for	another path if you want.
+	
+10.	Spring Uses RequestDispatcher by default for sending values.
+
+11.	Spring provides and special class i.e ModelAndView class which can hold 2 things:-
+	1-> view(ex. your jsp page name)
+	2->multiple objects(ex. your data values)
+	and this data will be easily send to your view using requestDispatcher which is inbuild used by your spring.
+	ex. ModelAndView mv=new ModelAndView();
+	
+12.	If you want to use any jdbc with your project you need to configure it in your application.property file.
+
+13.	spring provides you inbuilt interface to use crud operation you need to extends CrudRepository<ClassName, DataType of ID in table>.
+
+14.	You can create your own methods for customized operation on JDBC in the interface itself.
+	You need to follow some protocols in order get help from spring for your method for customized operation:-
+	1-method name starts from findBy or getBy and followed by variable name specified in class here in ex. name=tech so findByTech.
+	2-If you want complex query not helped by spring then you should you annotaion @Query("your query here")
+		ex. @Query("from Alien where tech=?1 order by aname")	// here ? is your tech passed by you and 1= argument number   and  Alien = class name not tableName
+			List<Alien> findByTechSorted(String tech);
+			
+15.	in order to interact between 2 services or machine we need web services and one way to implement web services is REST(Representational State Transfer).
+	It sends data in the form of xml,JSON etc instead of web pages from server side to another machine. it does CRUD operation in a manner like
+		C-Create-POST
+		R-Read-GET
+		U-Update-PUT
+		D-Delete-DELETE
+		
+16.	when you are working with REST, In your controller you need to tell your RequestDispatcher that you are not returning view name(ex. return "home.jsp")
+	but a actual data(ex. return dao.findAll().toString()) so dont search for view and you can do that via annotation @ResponseBody.
+	
+17. you can create wild card in your mapping url name with {} . ex @RequestMapping("getAliens/{aid}") it will take input you entered on url.
+	and set its name using annotation @PathVariable("name) (ex. public String getAlienRest(@PathVariable("aid") int aid)).
+	
+18.	We can use JpaRespository instead of CrudRepository  which has some extra features including CrudRepository features as it implements CrudRepository.
+
+19.	We Have Jackson-core dependency which converts our java object into JSON format.
+
+20.	We need a client who can send API request,fetch data,update data etc in JSON and XML format and for that we can use POSTMAN(it is an app).
+	Basically it is used to test your API to check url response, and any changes you made are working or not.
+	
+21.	there is a concept called content nagotiation which is used when you want data in different format (ex. you want xml format not json).
+	for xml format we need repository in pom.xml ie. jackson dataformat xml.
+
+22.	You can restrict from your controller the type of data it provides like you want to deliver only json format and not others.
+	for that you can add attribute produces={"application/formattype"} ex. produces={"application/json"}
+	
+23.	You can use @RestController annotation instead of Controller so that your controller knows that it is using for Rest services.
+
+24. You can use GetMapping and PostMapping annotation to specify get and post method perticularly instead of RequestMapping.
+
+25.	You need to add annotation @RequestBody in attributes to enable raw data from Postman. ex.( public Alien addAlien(@RequestBody  Alien alien))
+
+26.	when you are excepting data from client you can restrict what type of data you want using consumes(consumes={"application/json"}) attribute and 
+	when you are sending data to client	you can restrict what type of data you are sending using produces attribute(produces={"application/json"}).
+	
+27.	In Spring MVC we have a controller which defines all methods to perform some task and in order to get more efficient way we have Spring Data REST.
+	If we are working with Rest we dont need MVC Controller, we can directly work wth our dao class, you just need a annotation i.e
+	@RepositoryRestResource(CollectionResourceRel="aliens",path="aliens") where //CollectionResourceRel is your base url and path is your table name.
+	and you can do all operation from POSTMAN as you want.
+	
+
+	
+	

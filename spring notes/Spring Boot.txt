@@ -1,0 +1,14 @@
+1.	spring boot is a framework which applies spring concepts with extra features like auto configuration,
+	remove boilerplate code, assumptions, embedded tomcat server, embedded db etc.
+	
+2.	by default spring picks index.html page from webapp.
+
+3.	@SpringBootApplication annotation does component scan and configuration.
+	by default it scans package and its sub packages else you need to define all packages inside component scan.
+
+4.	spring provides application.properties files where you can modify configuration and add key,value pairs.
+
+5.	spring data provides easy way to access db with orm model.
+	@CrudRepository and @JpaRepository is used to provide crud operation.
+	
+6.	

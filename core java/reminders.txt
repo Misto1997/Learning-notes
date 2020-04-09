@@ -1,0 +1,80 @@
+1. how java works :-  source code->compiled by compiler->byte code generated->run on jvm(java virtual machine)-> objects to run code.
+2. variables are like containers which store data in it, changing data.
+3. premetive data types with precedence:- byte-> char/short->int->long->float->double.
+4. naming conventions:-  variable-abc , constant-ABC , method -myClass , class-MyClass , interface-Streachable.
+5. Switch can have string type in it. introduced in java 7 but not float and double.
+6. class is like blueprint which defines the structure of an object,while object is used to implement that blueprint, it have some behavior.
+7. classname ob; is a reference but when we allocate memory to it with "new" it becomes an object eg:- classname ob=new classname();
+8. by default variable have 0 in java not a garbage value as c/c++.
+9. we have string args[] in main because string accepts all type of values.
+10. main method is to be declared static because as static method can be called without object and we need to call main() even object is not there. 
+11. constructor is used to initialize data memebers and allocate memory to object.while static block is used to initialize the static variable.
+12. this keyword is used to point instance variable instead of local variable.
+13. there is a small memory in jvm i.e loader memory which loads all class.
+14. constructor is called when u create a object while static is called when the class is loaded.
+15. you cannot use non static variable and method inside main() via inheritance.
+16. class inside class is called inner class works as member class,to create object of inner class :- OuterClassName.InnerClassName InnerClassObjectname=OuterclassObject.new InnerClassName();
+17. array with uniform dimensions like 2*2,3*3 are called 2d array but if array have variable dimensions are called Jagged array.
+18. varargs stands for variable arugments ,handles the number of argument passed by user . int add(int ... n);// it becomes an array called variable length argument.
+19. super method is used to call methods,variable,specified constructor of super class or base class. eg:- super(i); in derived class will call parameterized constructor of base class.
+20. if we have reference of super class and object of derived class like Class ob=new student();then we can call only those method which are present in both.
+21. changing object for same reference is called dynamic method dispatch eg:- Class ob=new student();,ob=new student1();.
+22. binding data with methods is called encapsulation.
+23. every wrapper class like Integer,Double,Float etc extends Number class so u can use Number class instead of using them differently and Number class is an abstract class.
+24. final variable becomes constant,final Class becomes non inheritable and final method becomes non overwriden method.
+25. interface is used to implement multiple inheritence and it have only abstract methods and in it by default all methods are abstract and public.
+26. in abstract class we can define methods but in interface we cannot define methods and we cannot create object of interface but we can create reference of it.
+27. 3 type of interface, 1-normal interface which has more then 1 method in it, 2-single abstract method(functional interface) which has 1 method in it, 3-marker interface which do not have any method in it like Serializable.
+28. in java 1.8 we can declare as well as define methods in interface using default keyword.
+29. in java 1.8 we can define static method in interface and also declare variable but they are by default constant(final);
+30. AerithmeticException extends RuntimeException and RuntimeException extends Exception same for all other Exceptions.
+31. thread is a unit of process or a part of process.
+32. by default every java code has a thread i.e main() meothod thread.
+33. multiple threads works in parallel to achieve work faster than single thread working alone.
+34. every thread needs a method called run() to process anything and run () is called by start() like t1.start();.
+35. if u are not able to extends thread class then you can use Runnable interface.
+36. thread execution priority is set by schedular and if priority is same then its been executed randomly. u can use thread.sleep(); to set time diff..
+37. runnable interface have only run method not the start method so we have to create thread to implement class object.
+38. we can use join method with thread like t1.join(); to ask main method to wait for other thread to complete thier work first.
+39. we ca use isAlive method with thread like t1.isAlive(); to check whether thread is alive or not.
+40. by default name given to threads are thread-0,thread-1 and so on and we can check thier name by like t1.getName();.
+41. we can set thread name by using t1.setName("anyName");.
+42. by default priority given to thread is 5 and we can check that with t1.getPriority();. and it goes from 1 to 10 (1- minimum priority , 10-highest priority)
+43. we can set priority with t1.setPriority(number);. or setPriority(Thread.MIN_PRIORITY),setPriority(Thread.MAX_PRIORITY),setPriority(Thread.NORM_PRIORITY).
+44. when we made a method synchronized it allows only one thread to access it at a time. it makes method and class Thread Safe.
+45. array is faster than Collection but it can used for fixed values only wherease Collection can be used for variable values.
+46. collection is a concept,Collection is a interface and Collections is a Class, Collection(interface)->List(interface)->ArrayList(class).
+47. Collection have by default object type i.e u can add or insert anything to it.
+48. syntax of Collection :-  Collection <Datatype> CollectionName=new ArrayList<>();, eg Collection<Integer> value=new ArrayList<>();.(it contains function like:- value.add(5),value.isEmpty(),value.remove(0),value.contains(5) etc).
+49. Collection dont work with Index, for that we need to use List, in List every value have a unique Index number.
+50. List contains duplicate values and for unique values we need to use Set. syntax:- Set<datatype> SetName=new HashSet<>();.
+51. in Set, value printed is in ascending order regardless to the order of values added or inserted in it using TreeSet<>();.
+52. In List we have unique Index Number for each value but in Map we have unique Key for each value.
+53. Map is also a Interface which use HashMap(which is Syncrhronized) class for implementation. syntax:- Map<Key,value> MapName=new HashMap<>(); ,eg. Map<Integer,String> value=new HashMap<>();. or we can use Hashtable which in Asynchronized
+54. Collection dont have Index number thats why we Use Iterator Interface to Iterate the Collection. syntax Iterator IteratorName=CollectionName.iterator();,eg. Iterator it=value.iterator();.
+55. in List we can add object or any number in perticular Index like value.add(index,object); ,eg. value.add(0,2);
+56. we can use Collections class to use inbuild methods like Collections.sort(value);{it sorted the list in asc order}.,reverse(),shuffle() etc.
+57. List is mutable as we can change its value.
+58. we can create our own logic for sort() with the help of comparator interface. eg. Comparator<Integer> c=new Comparator<>(){ public int compare(Integer i,Integer j){logic here}}; then Collections.sort(value,c);.
+59. if we are working with class type data then we need to implements Comparable interface to our class to sort data.
+60. we use MapName.put(anything); to add or insert value in hashmap, MapName.get(key); to fetch the value on that key and for non key value it gives null result.
+61. there are 6 standards of oops ( inheritance,polymorphism,encapsulation,everything is in class ,everything is created in term of class and object , everything invoked through method) and java support first 4 standard and hence pure oops based but not 100%.
+62. 3 edition of java {1-standard edition (used for standalone app,desktop apps etc) , 2-Enterprise edition (used for server side) , 3-micro edition (used for chip level programming like embbeded)}.
+63. path refers to JDK and classpath refers to .jar files (to set local path :-     set path=location of jdk bin file ;.;%path%       set classpath=.;%classpath%     start ).
+64. if class is public then file name and class name should be same else not eg:- abc.java -> public abc.java.
+65. we can't have 2 public class in one java file.
+66. we can have more than one main method in a file.
+67. class inside file coverted into .class file not our .java file.
+68. we can call main even after program started.
+69. inner class is concept inside nested class, non static class is called inner class and static class is called nested class and it is impleted via annoymous class,inside local method and normal class.
+70. static method cant be overridden as static method binds to instance of class not to the object so even if you create same method in child class parent class method is called only.
+71. JVM, JRE, and JDK are platform dependent because the configuration of each OS is different from each other. However, Java is platform independent.
+    JVM(java virtual machine) it provides a runtime environment in which Java bytecode can be executed.
+    JRE(Java Runtime Environment) It is the implementation of JVM. It physically exists. It contains a set of libraries + other files that JVM uses at runtime.
+    JDK(Java Development Kit) It physically exists. It contains JRE + development tools.
+72. Java Static block used to initialize the static data member.It is executed before the main method at the time of classloading.
+73. Instance intializer block is invoked at the time of object creation. The java compiler copies the instance initializer block in the constructor after the first statement super(). So firstly, constructor is invoked.
+    example(constructor(){super();rest work inside constructor})  super calls inilializer block first and then constructor statements and if parent class present then parent class first then initializer and then constructor statements.
+74. Integer a=b; is called autoboxing and int b=a is called unboxing.
+75. String is Immutable as variable shares common pool for similar values and StringBuilder is mutable and Usync and StringBuffer is mutable and sync.
+76. 

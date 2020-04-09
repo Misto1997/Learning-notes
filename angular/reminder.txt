@@ -1,0 +1,68 @@
+1.	angular is framework to build client side applications.
+	a.	good for single page applications(SPA)
+	b.	modular approach
+	c.	re usable code.	
+
+2.	you need node.js, npm, angular cli and editor like visual studio code to create angular project.//npm install -g @angular/cli in node.js to install it.
+
+3.	ng new projectName is used to create a new file and ng serve to compile your project.
+
+4.	angular is based on modules and inside it components and every angular project have atleast 1 module and 1 component and i.e root module(AppModule), 
+	root component (AppComponent)  and each component contains HTML file  and a class that controls the logic of view.//components are building blocks of app.
+
+5.	modules also contains services which contains the business logic of your application.
+
+6.	in angular project you have package.json file which contains your dependencies or packages.
+
+7.	we have src>main.ts file which is the entry point to our application from here our AppModule file is called and from there our AppComponent is called.
+
+8.	to create new component you need to type at node.js (ng g c componentName) here g=global and c=component.
+
+9.	whatever component you create it is added into your AppModule file automatically and it imports component and added to declarations array.
+
+10.	there are 3 ways to set selector name:-
+	1.	custom tag eg. selector:'app-test' and then add <app-test></app-test>.
+	2.	class tag eg. selector:'.app-test' and then <div class="app-test"></div>.
+	3.	selector:'[app-test]' and then <div app-test></div>.
+	
+11.	there are 2 ways to set html file:-
+	1.	templateUrl: './test.component.html' and then your html file.
+	2.	tempate: `<div>inline template</div>`. //used for inline template
+	
+12.	there are 2 ways to set stylesheet file:-
+	1.	styleUrls: ['./test.component.css']
+	2.	style: [`div{color:red,font-size:28px}`]
+	
+13.	{{propertyName}} to bind value from class to your template is called interpolation, you can call inbuilt or user defined methods also.
+	you cannot use assignments inside it and also cannot call global methods directly inside {{}} ex.(	{{windows.location.href}}	)
+	but you can call inside method and then call that method.
+
+14	attribute and property is not same, attribute is defined by HTML but property is defined by DOM(Document Object Model)
+	attribute doesnt changes on changing value but property  changes on changing value.
+	
+15.	while using interpolation and property binding  there is one limitation in interpolation that it only work with string values.
+	and hence we use property binding like for boolean value [disabled]="false" or bind-disabled="false".
+	
+16.	class binding is used to dynamically bind class val to your template. you can also set class binding based on condition ex. [class.className]=booleanValue.
+
+17.	you can use [ngClass] directive to add multiple conditional statement ex. [ngClass]=objectName.
+
+18.	style binding is used to applied inline style to html elements and its similar to class binding.you can use [ngStyle] directive to add multiple styles.
+
+19.	in property, class, style binding we are binding data from class to our html file but in event binding we bind data from html to class.
+
+20.	template reference variable is used when you want some data input in html in your class file and you can do that by using #variableName.
+	and then (click)="methodName(variableName.value)"; ex. (click)="log(message.value)";
+
+21.	two way binding allows users to update property and display them in view and for that we use ngModel.with this view and model are always in sync.
+	[(ngModel)]="valueName" here [] is for property binding and () for event binding and hence 2 way binding.
+	
+22.	Structural directives are used to add or remove html elements and there are 3 common SD:-
+	1->	ngIf:- conditional directive, we need <ng-template #templateName></ng-template> block for else part to be executed,ng-template is a container.
+	2->	ngSwitch:- conditional directive
+	3->	ngFor:- iterative directive
+	
+23.	we can interact between component using @Input and @Output decorator, @Input gets data from parent component and @Output get data from child component.
+	for parent to child you can bind value at child selector name at html component and from child to parent you need to create event using EventEmitter.
+	
+24.	

@@ -1,0 +1,65 @@
+1. to add a new project to current repository.
+	-git init
+	-git remote add origin git@github.com:username/new_repo
+	-git commit -m "comment"
+	-git push -u origin master
+
+2. to add and commit in one statement
+	-git commit -am "message"
+	
+3. to delete some file from git
+	-git rm filename
+	-git rm -r filename	:Allow recursive removal when a leading directory name is given.
+	-git rm --cached filename :Use this option to unstage and remove paths only from the index.
+	
+4. to unstage from git commit/to revoke commit
+	-git reset HEAD~
+	-again add and commit changes
+
+5. to revoke push from remote repository
+	-git reset --hard <last commit id>
+	-git push --force
+		
+6.	to unstage from git add/revoke git add
+	-git restore --staged filename	
+	
+7.	to check difference between current and master branch
+	-git diff master currentBranchName
+	
+8.	to check logs
+	-git log    : it will show all logs
+	-git log -n 5   : it will show last 5 logs
+	-git log --author="rahul"   :it will show all logs by this author
+	
+9.	to restore deleted/changed file
+	-git restore filename
+	
+10.	to see changes in modified file 
+	-git diff filename	:before staging
+	-git diff --staged filename   :after staging
+	
+11.	to move/rename file
+	-git mv originalfilename newfilename
+
+12.	to revert any commit
+	-git revert commitId
+	
+13.	to ignore already tracked file in .gitignore
+	-	1-git rm --cached filename  : Use this option to unstage and remove paths only from the index.
+		2-git add .gitignore file with ignore filename
+		
+14. branching
+	-git branch branchName	:to create branch
+	-git checkout branchName	:to switch between branches
+	-git checkout -b branchName	:to create and switch to new branch in one statement
+	-git branch -d branchName	:to delete current branch locally
+	-go to master	:to delete current branch from server
+		-git push -d :branchName
+	-go to master and then	:to merge branch to master
+		-git merge branchName
+	-git push origin +:refs/heads/#branch_name	:to delete branch refs
+	-git branch -m <newname>	:to rename branchName
+	
+15.	checkout to master from branch if not committed/stashed
+	-git checkout master	:if changes conflicts to master then it will ask to resolve it first
+	-git checkout master	:if changes doesnt conflicts to master it will ignore the changes

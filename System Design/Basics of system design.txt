@@ -1,0 +1,134 @@
+1.	follow ABCD:-
+	-Ask good question's relevant to problem
+	-dont say buzzwords which you dont know about in depth
+	-clear view of problem on higher level
+	-drive the discussion
+	
+2.	basics things required for system design:-
+	a.	features - what are the minimum features needed for that problem.
+	b.	define API's - what are the api's need and who all are gonna call them.
+	c.	availability - how much your system is available. like, if host goes down does your system still available.
+	d.	latency performance - it means the response time or delay time, how it should be.
+	e.	scalability - how much scalable the system would be on increasing users.
+	f.	durability - it means recover from failure, how much durable is your system.
+	g.	class diagram - draw a class diagram for the problem
+	h.	security and privacy - propose a security mechanism if asked or you know.
+	i.	cost effective - is it a cost effective solution.
+	
+3.	different aspects to be consider:-
+	1.	Scaling
+			-vertical scale i.e add more memory,cpu your system and it is more expensive and limited but no distributed system
+			 challenges
+			-horizontal scale i.e add more hosts, cost efficient and variable but distributed system challenges have to be
+			 taken care.
+		
+	2.	CAP(consistency availability partitioning) theorem
+		-consistency means you read have most recent updated write.
+		-availability means what are getting might be most recent data or maybe not.
+		-partitioning means there might be chances of packet missing while transfering over network.
+		-you can only achieve only two of these three at a time and partitioning must be there so either c or a with p.
+		-sql mostly prefer c with p and nosql prefer a with p.
+		
+	3.	ACID(atomicity consistency isolation durability) vs BASE(Basically Available, Soft state, Eventual consistency)
+		-rdbms are mostly based on ACID while NOSQl based mostly on BASE i.e if you data is available eventually it
+		 become consistent when it stops receiving input.
+		 
+	4.	partitioning/sharding of data i.e you cant have huge amount of data in one place and hence you need to split data
+		in different DB and maintain that how data is split and shared.
+		-one way to do this is consistent hashing.
+			-simple way is keep hash key of data stored at one place and if data is huge than you need to have more server.
+			-in case of more server you can do something like hash key modulo number of servers.
+			-but if one server goes down you need to do rehashing to place all key across remaining server.
+			-it will take time and load and hence we can use consistent hashing.
+			-in this we have a abstract circle in which key and server are placed using same hash function.
+			-and then key are rotated clockwise and gets in server that occurs first and if one server goes down
+			 only keys of that server will gets into another server via same process again.
+			-in this all keys will get assigned to single server on rotation so we have replicas of server
+			 if one server is full we can put key to another replica of that servevr.
+		
+	5.	Optimistic and pessimistic locking
+		-In optimistic locking you do not aquire lock before hand but when you are ready to commit transaction you check whether
+		 is there any transaction or not which are updating records.(flipkart flash sale)
+		-In pessimistic locking you aquire all locks before commiting any transaction.(redbus ticket booking)
+		
+	6.	Strong consistency vs eventual consistency
+		-strong consistency is used in rdbms where consistency is important
+		-eventual consistency is used in nosql where availability is important.
+		
+	7.	rdbms vs nosql
+		-based on situation you need judge which one is better.
+		
+	8.	caching for commonly used data
+		-two types 
+			-node based where all nodes maintain its own cache
+			-distributed where all nodes share same cache.
+		-cache cannot be source of true data as it may not have latest data
+		-data needs to be small or less as its in main memory.
+		-some eviction policy
+	
+	9.	data centers/racks/host
+		-data is a place where large group of system connected over network to build larger number of servers 
+		 to store,process,distribute data etc.
+		-data centers have racks and racks have host
+		-you need checks latency between hosts or between racks
+		-what if host goes or racks goes down or entire host or rack goes down.
+		
+	10.	cpu/memory/hard drive/network bandwidth
+		-these are limited resources so you need to check how to utilize them or work around these resources.
+		
+	11.	http vs http2 vs websocket
+		-http2 can send multiple request over one tcp connection unlike http
+		-have many more benifits like header compression, binary protocol instead of textual,server push etc.
+		-websocked can do bidirection transfer or you ca say it can do full duplex communication.
+		
+	12.	tcp/ip model
+		-the 4 layer architecture
+			-Process/Application Layer
+			Host-to-Host/Transport Layer
+			Internet Layer
+			Network Access/Link Layer
+			
+	13.	ipv4 vs ipv6
+		-ipv4 32 bit and ipv6 128 bit.
+		
+	14.	TCP(Transmission Control Protocol) vs UDP(User Datagram Protocol)
+		-tcp is connection oriented protocol while udp is connection less protocol.
+		-tcp is slower than udp but assured gauranteed data transfer.
+		
+	15.	DNS lookup
+		-converts your domain to IP address.
+		
+	16.	Https
+		-when Secure Sockets Layer (SSL) combines with http it becomes https.
+		
+	17.	public key infrastructure and certificate authority
+		-public key needs to be verified by certificate authority which tells wheather public key is from valid source ornot.
+	
+	18.	symmetric vs asymmectric key encryption
+		-asymmectric key encryption is like public private key encryption and it is expensive computation encryption
+		-symmetric key encryption is like AES which is used for large data as it is less expensive computation.
+		
+	19.	Load balancer
+		-balance the load or server based on number of request.
+		
+	20.	CDN(Content delivery network) and edge
+		-if we are streaming something from youtube they will put that thing near to your hub i.e CDN near to means
+			so that it will much better and smoother.
+		-edge is similar to cdn but it has dedicated network to data center instead of normal route way to get better
+			and faster data.
+			
+	21.	bloom filter and count min sketch
+		-these are space efficient probabilistic based data structure
+		
+	22.	design patterns ans oops concepts
+	
+	23.	virtual machines and containers(docker)
+	
+	24.	messaging queue(publisher subscriber over queue)
+		-rabbitMq
+		-kafka
+		-activeMq
+	
+	25.	Map reduce for big data
+	
+	26.	multithreading, locks, sychronization, concurrency.

@@ -1,0 +1,82 @@
+1.	The main component of MVC is Dispatcher servlet, it maintains everything like handler mapping, controller, view resolver etc.
+	It is like a Front controller or a main controller that handles all other controller's.
+
+2.	Handler mapping, it maps the request to approprite controller
+		-2 most popular type of mapping:-
+			-RequestMapping	-	maps to controller based on annotation 
+			-SampleUriMappping	- maps based on uri
+
+3.	Controller controls everything in the application and intract with services.	(dispatcher servlet->	Controller's->	Service's->	Dao's,mails etc).
+
+4.	@Controller used to make any class Controller.
+
+5.	@RequestMapping to map jsp to controller as generic type.
+
+6.	@GetMapping("/action method name") for http get request type.
+	@GetMapping(path="/action method name",param="eventType").
+	@GetMapping("/action method name/{some Variable}")
+
+7.	@PostMapping("/action method name") for http post request type.
+
+8.	@PathVariable to accesss variable inside url.
+
+9.	ModelAndView is used to set and get Model and Views.
+		-ModelAndViewObjectName.addObject("attribute name",object);
+		-ModelAndViewObjectName.setViewName(viewName);
+
+9.	@RequestParam("variable name") to get parameter from jsp page.
+
+10.	there are some special beans which are being scanned by DispatcherServlet:- 
+	-HandlerMapping	-	Map a request.
+	-HandlerAdapter	-	help DispatcherServlet  to invoke a handler mapped to a request.
+	-HandlerExceptionResolver	-	Strategy to resolve exceptions
+	-ViewResolver	-	resolve string based views
+	-LocaleResolver	-	resolve the locale
+	-ThemeResolver	-	resolve themes
+	-MultipartResolver
+	-FlashMapManager
+	
+11.	ViewResolver let you define models without tying to specific view technology.
+
+12.	When a request comes in, the DispatcherServlet looks for a locale resolver and, if it finds one, it tries to use it to set the locale. 
+
+13.	ThemeResolver let you use theme for perticular request.
+
+14.	@ModelAttribute -	This is referred to as data binding. it binds the parameter from http to your object.
+	ex:-	@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+			public String processSubmit(@ModelAttribute Pet pet) { }		// ownerId and petId binds to pet object that have both as variable
+
+15.	@SessionAttributes -	is used to store model attributes in the HTTP Servlet session between requests.
+	ex:-	@Controller
+			@SessionAttributes("pet") 
+			public class EditPetForm {// ...}
+	
+16.	@SessionAttribute used to access to pre-existing session attributes that are managed globally.
+	ex:-	@RequestMapping("/")
+			public String handle(@SessionAttribute User user) { // ...}
+
+17.	@RequestBody annotation to have the request body read and deserialized into an Object through an HttpMessageConverter.
+	basically binds request body which contains json or xml format.
+	ex:-	@PostMapping("/accounts")
+			public void handle(@RequestBody Account account) {// ...}
+			
+18.	HttpEntity is more or less identical to using @RequestBody but is based on a container object that exposes request headers and body. 
+	ex:-@PostMapping("/accounts")
+		public void handle(HttpEntity<Account> entity) { // ...}
+			
+18.	@ResponseBody annotation on a method to have the return serialized to the response body through an HttpMessageConverter.
+	ex:-@GetMapping("/accounts/{id}")
+		@ResponseBody
+		public Account handle() {// ...}
+		
+19.	ResponseEntity is like @ResponseBody but with status and headers.
+	ex:-@GetMapping("/something")
+		public ResponseEntity<String> handle() {
+		String body = ... ;
+		String etag = ... ;
+		return ResponseEntity.ok().eTag(etag).build(body);}
+		
+20.	CORS is used to connect backend to frontend.Cross-Origin Resource Sharing (CORS) is a W3C specification implemented by most browsers 
+	that lets you specify what kind of cross-domain requests are authorized, rather than using less secure and less powerful workarounds based on IFRAME or JSONP.
+	
+21.	

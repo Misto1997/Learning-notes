@@ -1,0 +1,92 @@
+1.	One of the important feature of Spring is Depenedency injection and with IoC(Inversion of Control) we can acheive it.
+
+2.	IoC container maintains class dependencies, Object injected at runtime not at compile time.
+
+3.	with IoC you can avoid defects like incorrect construction of object and it also reduces object coupling.
+
+4.	you dont have to worry about creating object at main method or somewhere else IoC manages that, just call the object.
+
+5.	ApplicationContext handles the BeanFactory, any intraction with BeanFactory is through ApplicationContext.
+	It is Superset of BeanFactory.
+
+6.	It provides the metadata for bean creation and provides mechanism for creation of beans.
+
+7.	ApplicationContext provides singleton bean by default but you can change it.
+
+8.	One can create multiple ApplicationContext and parent ApplicationContext can intract with child ApplicationContext but vice versa is not true.
+
+9.	ApplicationContext have 3 type of configuration Java Based, Xml based, Annotation based.
+
+10.	@Configuration	used to configure your class that contains bean or ApplicationContext.
+
+11.	@Bean to configure our bean class at method level.
+
+12.	@Import(className.class) to add another configuration file.
+
+13.	@Autowired to find bean in IoC container or we can say to achieve dependency injection.
+
+14.	@Value("${keyName}") to get value of that key from property file.
+
+15.	@PropertySource("classpath:/fileName") to define property file.
+
+16.	@Profile("profileName") to add Profile to method and set environment variable for that profileName to call.
+
+17.	Bean Scope types:-
+	1-	Singleton	-	one instance per IoC container.
+	2-	Prototype	-	new instance everytime it is referenced.
+	3-	Session		-	used in web app, one instance per user session.
+	4-	Request		-	used in web app, one instance per request.
+	5-	Application	-	Scopes a single bean definition to the lifecycle of a ServletContext.	
+	6-	webSocket	-	Scopes a single bean definition to the lifecycle of a WebSocket.
+	
+18.	@Scope("bean scope type") to change bean scope.
+
+19.	Proxies are aspects, it adds behavior.
+
+20.	@Component	used to load class in bean factory.
+
+21.	@Qualifier used when multiple Components are there, specify which component to call.
+
+22.	@ComponentScan(basePackges={"package name"}) to scan components.
+
+23.	@Service same as Component but used for service packages.
+
+24. @Repository same as Component but used for dao packages.
+
+25.	Spring life cycle Overview:-
+	-it begins with creation of ApplicationContext
+	-BeanFactory initialization
+	-Bean initialization and instantiated
+		-Bean Defination is being loaded
+			-using java configuration
+			-xml configuration
+			-annotation configuration
+		-PostProcesssors
+			-can modify Bean even prior to instantiated ex:- PropertySourcesPlaceholderConfigurer
+			-can be used via implement BeanFactoryPostProcessor
+		-Instantiation of Bean
+			-Beans are instantiated in factory using constructor
+			-Not available to use yet.
+		-Setters
+			-setters are called
+		-Bean Post-Processing
+			-can added additional behavior
+			-also called Second BeanPostProcessor
+			-@PostConstruct method is called here
+			-here Beans are ready to use.
+	-Use phase-	can use beans in application
+	-Destruction phase
+	-Destruction phase
+		-begins when close is called on ApplicationContext
+		-anything annotated with  @PreDestroy are destroyed
+		-Beans are not destroyed in this process, its only destructed by garbage collector.
+			
+26- With Java configuration instantiation and setters are merge, both steps happens together using @Bean.
+
+27- With auto configuration(annotation) first instantiation happens then with @Autowired setters are called.
+
+28-	With Xml configuration instantiation of all bean and then property injection happens same as annotation based.
+
+29.	ApplicationContext have proxies to all original classes.
+
+30.	Aspects are reusable block of code that injected in application at runtime.
