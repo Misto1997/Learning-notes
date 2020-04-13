@@ -3,6 +3,8 @@
 	-git remote add origin git@github.com:username/new_repo
 	-git commit -m "comment"
 	-git push -u origin master
+	-always do "git fetch" before changing file or before pushing file to remote.it gives you meta data
+		whether your remote is synced  with local or not.
 
 2. to add and commit in one statement
 	-git commit -am "message"
@@ -52,9 +54,10 @@
 	-git branch branchName	:to create branch
 	-git checkout branchName	:to switch between branches
 	-git checkout -b branchName	:to create and switch to new branch in one statement
-	-git branch -d branchName	:to delete current branch locally
-	-go to master	:to delete current branch from server
-		-git push -d :branchName
+	-git branch -d branchName	:to delete current branch locally(first go to master and then delete)
+	-git branch -D branchname	:to delete a branch which have some commits
+	-go to master	:to delete branch from server
+		-git push origin :branchName
 	-go to master and then	:to merge branch to master
 		-git merge branchName
 	-git push origin +:refs/heads/#branch_name	:to delete branch refs
@@ -63,3 +66,30 @@
 15.	checkout to master from branch if not committed/stashed
 	-git checkout master	:if changes conflicts to master then it will ask to resolve it first
 	-git checkout master	:if changes doesnt conflicts to master it will ignore the changes
+	
+16.	to create branch from branch
+	-got to that branch and then
+		-git checkout -b branchName
+	-from master
+		-git checkout -b branchname branchname or parent branch
+		
+17.	to check changes log in graph way
+	-git log --all --graph --decorate --oneline --simplify-by-decoration
+	
+18.	git automatically does fast forward merge if master doesnt have any changes that does not exist in branch to be merged
+	else it does real recurssive merge with a new commit.
+	
+19.	Merge conflicts:-
+	-git merge --abort	:to abort the merge request
+	-go to branch
+		-git pull origin master	:take changes from master
+		-resolve them manually
+		-git commit -am "changes"
+		-git push
+	-
+
+20.	to save your work and work around with other changes
+	-git stash save or git stash push	:to save your work and index
+	-git stash list	: to check saved content list
+	-git stash pop	:to get saved data back
+	-git stash apply	:to get saved data and it also remains at saved list
