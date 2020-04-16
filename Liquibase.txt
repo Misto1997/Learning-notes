@@ -1,0 +1,19 @@
+1.	liquebase is used for versioning of database, its like git for dbms as you have to add, delete, update etc. tables and schema while developing.
+
+2.	we can write liquibase scripts in xml,json,yaml and sql format.
+
+3.	It supports code branching and merging.
+
+4.	Working flow:-
+	-It identify the database type from change log
+	-then we have set of change sets(we can create or remove one or more change sets)
+	-based on these change sets it creates sql file.
+	
+5.	If you have error in your change set, liquibase process will fail and you need to resolve issue.
+
+6.	If you run liquibase for the first time, it will create two  files
+		1- databasechangelog	-actual database scripts recides here
+		2- databasechangeloglock	-it defines only one person at a time will change database scripts.
+	-from next time it will only update these 2 files
+	
+7.	
