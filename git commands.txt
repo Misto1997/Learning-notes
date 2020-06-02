@@ -13,6 +13,10 @@
 	-git rm filename
 	-git rm -r filename	:Allow recursive removal when a leading directory name is given.
 	-git rm --cached filename :Use this option to unstage and remove paths only from the index.
+			or
+	-delete file from local
+	-git commit -am "message"
+	-git push
 	
 4. to unstage from git commit/to revoke commit
 	-git reset HEAD~
@@ -54,7 +58,7 @@
 	-git branch branchName	:to create branch
 	-git checkout branchName	:to switch between branches
 	-git checkout -b branchName	:to create and switch to new branch in one statement
-	-git branch -d branchName	:to delete current branch locally(first go to master and then delete)
+	-git branch -d branchName	:to delete branch locally(first go to master and then delete)
 	-git branch -D branchname	:to delete a branch which have some commits
 	-go to master	:to delete branch from server
 		-git push origin :branchName
@@ -86,7 +90,15 @@
 		-resolve them manually
 		-git commit -am "changes"
 		-git push
-	-
+		
+		or
+	-goto master
+		-git pull      --- from remote master
+	-goto branch again
+		-git merge master
+		-resolve them manually
+		-git commit -am "changes"
+		-git push
 
 20.	to save your work and work around with other changes
 	-git stash save or git stash push	:to save your work and index
