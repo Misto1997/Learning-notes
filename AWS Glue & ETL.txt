@@ -1,0 +1,84 @@
+1.	AWS Glue is a fully managed ETL(Extract, Transform and Load) Service that makes it simple and cost-effective to categorize our data.
+	
+2.	it consist:-
+		-Central meta data repo. called glue data catalog.
+		-it has ETL engine that auto. generate python/scala code.
+		-Scheduler that handles dependency resolution, job monitoring and retrace.
+		-it is serverless
+	
+3.	Usage:-
+		-read data from various source, organize it, clean it, validate it, format it and move to other datbase.It provides you common place for decision making.
+		-example: you can read from s3 Bucket, create catalog and querying with aws athena.
+	
+4.	Architecture:-
+		-we define a crawler with meta data table defination, it points to a data source and creates coresponding meta data table defination in the catalog, 
+			catalog contains some other meta data definations used for ETL jobs.
+		-you can run ETL Script on demand or schedule it or event driven.
+		-scripts run, it extract data from data source transform it and load in some data target.
+		-scripts runs in apache spark env. in aws glue.
+	
+5.	terminology:-
+	-data catalog:-
+		-it is a persistent meta data store in aws glue, it contains table definations, job defination and other control informations to manage
+			aws glue env. , each aws account have 1 catalog per region.
+	
+	-Classifier:-
+		-it determines the schema of the data, aws glue provides classifier for common file types such as csv,json, xml etc.
+		-one can write own classifier by growk pattern or by specifying row tag in xml document.
+		
+	-Connection:-
+		-it contains the property that required to connect to data source.
+		
+	-Crawler:-
+		-program that connects to data source and executes list of classifier to determine the schema and create meta table table defination in catalog.
+			
+	-database:-
+		- set of associated data catalog, table definations.
+		
+	-data store:-
+		-it is repo. to persistently storing our data, eg. S3 bucket or RDBMS
+	
+	-data source:-
+		-target data source used for input data
+	
+	-data target:-
+		-data source contains processed/load data
+		
+	-dev, endpoint:-
+		-endpoint to development/test etl scripts
+		
+	-Job:-
+		-business logic required for ETL. initiated by triggers
+		
+	-noteook server:- 
+		-web based env. used to run statement.
+	
+	-script:-
+		-script contains the code that do ETL.
+		
+	-Table:-
+		-consists of columns, data type defination and other meta data about base data set.
+		
+	-Trasform:-
+		-core logic to manupulate data in different format
+		
+	-trigger:-
+		-trigger initiate a ETL Job, it can be scheduled
+		
+steps to use:- ( read from s3 and write to s3 as csv file)
+	s3 as data store:-
+		1-create bucket in s3
+		2-create folder to store your data file
+		3-upload your file inside folder
+		
+	add crawler:-
+		1-goto aws glue 
+		2-got crawler and add crawler
+		3-when you run this crawler it will create database inside databases table
+	
+	create job:-
+		1-goto aws glues and then to job
+		2-click on add job
+		3- add your own script or use aws generated script
+		4- run job
+	

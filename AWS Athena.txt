@@ -1,0 +1,13 @@
+1.	Athena is serverless interactive query system i.e not need to spin up server or scaling.
+
+2.	works on the data stored in s3 and it uses standard SQL.
+
+3.	it supports various formats like csv, json, avro, orc, parquet etc.
+
+4.	point to s3 data set and you can do qeury over it.
+
+5.	it can be integrated with AWS glue for big data purpose.
+
+6.	no need to spin up servers or some clusters like hadoop for big data.
+
+7.	
