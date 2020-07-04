@@ -120,7 +120,7 @@
 	21.	bloom filter and count min sketch
 		-these are space efficient probabilistic based data structure
 		
-	22.	design patterns ans oops concepts
+	22.	design patterns and oops concepts
 	
 	23.	virtual machines and containers(docker)
 	
@@ -132,3 +132,5 @@
 	25.	Map reduce for big data
 	
 	26.	multithreading, locks, sychronization, concurrency.
+	
+4.	

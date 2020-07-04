@@ -1,0 +1,43 @@
+1.Functional programming vs OOP'simple
+	-https://medium.com/@shaistha24/functional-programming-vs-object-oriented-programming-oop-which-is-better-82172e53a526#:~:text=Both%20Functional%20programming%20and%20object,data%20is%20stored%20in%20objects.
+
+2.	Consumer:	A Consumer is a functional interface that accepts a single input and returns no output.
+	ex:		public void whenNamesPresentConsumeAll(){
+				Stream<String> cities = Stream.of("Sydney", "Dhaka", "New York", "London");
+				cities.forEach(t -> System.out.println(t));
+			}
+
+3.	Suplier:	It represents a function which does not take in any argument but produces a value of type T.
+	ex:		public static void main(String[] args) {
+				Supplier<Double> randomValue = () -> Math.random();
+				System.out.println(randomValue.get());
+			}
+
+3.	predicate:	It gives a Boolean value as a result for a specified argument.
+				This is mainly used to filter data from a Java Stream.
+	ex:		public static void main(String[] args) {
+				List<String> names = Arrays.asList("John", "Smith", "Samueal", "Catley", "Sie");
+				names.stream().filter(str -> str.startsWith("S")).forEach(str -> System.out.println(str));
+			}
+			
+4.	Function:	A Function interface is more of a generic one that takes one argument and produces a result.
+				One of the common use cases of this interface is Stream.map method.
+	ex:		public static void main(String[] args) {
+				List<String> names = Arrays.asList("Smith", "Gourav", "Heather", "John", "Catania");
+				names.stream().map(str->str.toUpperCase()).forEach(str-> System.out.println(str));
+			}
+			
+5.	method reference:	when we are using a method reference – the target reference is placed before the delimiter :: and the name of the method is provided after it.
+	ex:		list.forEach(System.out::println);
+
+6.	Java Stream doesn’t store data, it operates on the source data structure (collection and array) and 
+	produce pipelined data that we can use and perform specific operations. 
+	Such as we can create a stream from the list and filter it based on a condition.
+	Java Stream operations use functional interfaces, that makes it a very good fit for functional programming using lambda exp.
+	
+	Java Streams are consumable, so there is no way to create a reference to stream for future usage. 
+	Since the data is on-demand, it’s not possible to reuse the same stream multiple times.
+	
+	Java 8 Stream support sequential as well as parallel processing, 
+	parallel processing can be very helpful in achieving high performance for large collections.
+	Streams don’t change the original data structure, they only provide the result as per the pipelined methods.
