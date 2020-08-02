@@ -13,7 +13,7 @@
 	 that connect Kafka topics to existing applications or data systems. For example, 
 	 a connector to a relational database might capture every change to a table.
 	 
-3.	lets say producer sends data and consumer consumes data but in between kafka cluster recides in which there is brokers,
+3.	lets say producer sends data and consumer consumes data but in between kafka cluster recides in which there are brokers,
 	-it distributes the load and provide multiple backup for your data.
 	-each broker have one or more kafka topics, topic is like a category/feed of changes in data(eg. sales order,customer info).
 	-these topics can be partitioned to multiple broker which allow data to be resilience so if one broker goes down

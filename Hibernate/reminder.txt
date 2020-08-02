@@ -3,7 +3,7 @@
 2.	we have 3 files for complete hibernate:-
 	1-Your main class(ex. app.java) where you do your all operations:-
 		a-Session is a interface provided by hibernate and to create object of it we need to implement via SessionFactory.
-		b-SessionFactory is also a inteface and so we need to use Configuration class to create object of it and all these are under hibernate package.
+		b-SessionFactory is also a interface and so we need to use Configuration class to create object of it and all these are under hibernate package.
 			ex- Configuration cfg=new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Users.class);// addAnnotatedClass to add your entity class.
 				SessionFactory factory=cfg.buildSessionFactory();//creating Sessionfactory object
 				Session session=factory.openSession();  //Creating Sesion object to connect to database
@@ -20,7 +20,7 @@
 
 4.	you can use @Column(name="column_name") annotation to define column name in table specifically.
 
-5.	@Transient keyword can be used if you dont want to store that perticular column in table.
+5.	@Transient keyword can be used if you dont want to store that particular column in table.
 
 6.	@Embeddable is used when you want to use class variable inside another class without confusion. which prevents compiler to check for another entity class.
 
@@ -36,7 +36,7 @@
 	b-> EAGER- by default FetchType=EAGER in which you get all data which are joined by realtionship.
 	
 9.	Apart from ORM Model Hibernate gives you caching technique so that you dont need to use database again and again.
-	->First Level Cache which is provided by hibernate and it store data which is recently used during query for a perticular session.
+	->First Level Cache which is provided by hibernate and it store data which is recently used during query for a particular session.
 	  for different session we have different second level cache.if a query is fired once is stored for that session only for different session it is not
 	  available.It works automatically without writing anything else in the code. if you fetch 2 times it will fire query only once.
 	->Second Level Cache, in this you can share cache among different session but it is not provided by hibernate you have to configure it.ex(ehcache).

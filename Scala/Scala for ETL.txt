@@ -1,0 +1,5 @@
+1.	Scala is a specially designed for scalability.
+
+2.	Apache spark is big data platform that is being written in scala.
+
+3.	

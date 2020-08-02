@@ -12,7 +12,7 @@
 
 6.	get and post used in client side(jsp or html) while doGet and doPost used in server side(servlet) and these two called through service method only.
 
-7.	RequestDispatcher is a interface so to get instance of it you need to use (RequestDispatcher rd= request.getRequestDispatcher();).
+7.	RequestDispatcher is a interface so to get instance of it, you need to use (RequestDispatcher rd= request.getRequestDispatcher();).
 
 8.	request.setAttribute("variable",value); and request.getAttribute("variable"); (used when same request object is used)
 	are methods of Httpservletrequest used to set and get values between diff. servlets apart from session management.
@@ -39,7 +39,7 @@
 
 14.	You can use Servlet Annotation to map your servlet with your page if you dont want to use web.xml file (ex. @WebServlet("/urlName") ).
 
-15.	JSP(Java Server Pages) it used when you want to do server side programming(servlet) along with your front end designing(css,html) in a single page.
+15.	JSP(Java Server Pages) it is used when you want to do server side programming(servlet) along with your front end designing(css,html) in a single page.
 
 16.	JSP have implicit all objects provide by Tomcat to implement like request,response,PrintWriter,HttpSession etc.
 

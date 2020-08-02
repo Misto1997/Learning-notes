@@ -1,5 +1,5 @@
 1.	spring boot is a framework which applies spring concepts with extra features like auto configuration,
-	remove boilerplate code, assumptions, embedded tomcat server, embedded db etc.
+	remove boilerplate code/configuration, assumptions/opionated view, embedded tomcat server, embedded db etc.
 	
 2.	by default spring picks index.html page from webapp.
 
