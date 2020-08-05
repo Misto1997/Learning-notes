@@ -50,4 +50,24 @@
 					  
 	5.	Class : same as java.
 	
-13.	
+13.	Types of Collections:
+	1.	Sequences:
+		-contains Collections like: Vector, Streams, List, Queue, String, Stack
+	
+	2.	Sets:
+		-contains Collections like: HashSet, SortedSet, TreeSet, BitSet, ListSet
+	
+	3.	Maps:
+		-contains Collections like:	HashMap, SortedMap, TreeMap, ListMap
+		
+14.	Scala provides parallel Collections to process data faster with no/minimal overhead:
+	-ParArray is for Parallel Array.
+	-ParVector
+	-ParHashMap etc.
+	
+15.	things to check before using parallel Collections:
+	-use PC when you have huge dataset.
+	-PC took lot more space then sequential Collections.
+	-change in order of dataset each time you us PC.
+	
+16.	
