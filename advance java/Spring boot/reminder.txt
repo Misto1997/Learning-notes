@@ -1,4 +1,4 @@
-1.	Spring provides many features like POJO,Dependencies Injection,MVC,REST etc and it can be easily integrated with other frameworks like hibernate and strut.
+1.	Spring provides many features like Dependencies Injection,MVC,REST etc and it can be easily integrated with other frameworks like hibernate and strut.
 
 2.	Spring boot provides you dependencies, configuration and embedded server(Tomcat) so that you can easily work with Spring without worrying much.
 

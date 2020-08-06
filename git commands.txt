@@ -65,7 +65,7 @@
 	-go to master and then	:to merge branch to master
 		-git merge branchName
 	-git push origin +:refs/heads/#branch_name	:to delete branch refs
-	-git branch -m <newname>	:to rename branchName
+	-git branch -m <oldName> <newname>       :to rename branchName
 	
 15.	checkout to master from branch if not committed/stashed
 	-git checkout master	:if changes conflicts to master then it will ask to resolve it first
