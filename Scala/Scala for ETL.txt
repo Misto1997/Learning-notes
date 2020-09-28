@@ -1,0 +1,42 @@
+1.	Scala is a specially designed for scalability.
+
+2.	Apache spark is big data platform that is written in scala.
+
+3.	Spark is a distributed processing framework and its faster than hadoop.
+	-Fast processing of libraries for analytics.
+	-Stream processing
+	-Fault tolerant
+	-Scalable
+
+4.	Spark uses RDD(Resilient Distributed DataSet) data structure.
+	-Immutable distributed Collection
+	-Organized into logical partitions
+	-Fault tolerant Collection
+	-Maybe keep data in memory or persisted
+	-it is somewhat like parallel collections as data is processed in parallel but have some difference like
+		-RDD are partitioned by hash function where as PC are broken into subset and distributed among various cores.
+		-RDD are distributed across multiple servers where as PC are in single server.
+		-RDD data can be  easily persisted to permanent storage.
+	-faster then sequential operations.
+	
+5.	to install and use spark locally:
+	-https://phoenixnap.com/kb/install-spark-on-windows-10
+	
+6.	examples:
+	-val bigRange=1 to 100000		//to create sequential range
+	-val sparkBigRange=sc.parallelize(bigRange)	//to create RDD out of range
+	-val x=sparkBigRange1.takeSample(true, 10)	//take sample of 10 number out of RDD
+	-sparkBigRange1.stats		//gives your high level stats of RDD like min,max,count etc
+	-sparkBigRange1.mean	//gives you mean
+	
+7.	A Data frame is a two-dimensional data structure, data is aligned in a tabular fashion in rows and columns.
+	or
+	A DataFrame is similar to a table and supports functional-style (map/reduce/filter/etc.) operations and 
+	SQL operations (select, project, aggregate).
+
+8.	A DynamicFrame is similar to a DataFrame, except that each record is self-describing, so no schema is required initially. 
+    Instead, AWS Glue computes a schema on-the-fly when required, and explicitly encodes schema inconsistencies 
+	using a choice (or union) type. You can resolve these inconsistencies to make your datasets compatible with data stores 
+	that require a fixed schema.
+	
+9.	

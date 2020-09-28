@@ -23,9 +23,51 @@
 
 10.	in order to handle concurrency in scala by default almost everything is immutable i.e Int , List, Array etc.
 
-11.	like java have Object type as top data type in scala we have "Any" type if we dont define anything futher it have AnyVal
+11.	like java have Object type as top data type in scala we have "Any" type if we dont define anything further it have AnyVal
 	and AnyRef.
 	AnyVal- Integer,boolean,char
 	AnyRef-	Collections,String,Classes
 	
-12.	
+12.	Different type of class declaration in Scala:
+	1.	Object : An object is a type of class that can have no more than one instance, 
+				 known in object-oriented design as a singleton.Instead of creating an instance with a new keyword, 
+				 just access the object directly by name. An object gets automatically instantiated the first time 
+				 it is accessed in a running JVM, which also means that until it is accessed the first time it won’t get 
+				 instantiated.
+				 
+	2.	Trait : A trait is a kind of class that enables multiple inheritance. Classes, case classes, objects, 
+				and (yes) traits can all extend no more than one class but can extend multiple traits at the same time. 
+				Unlike the other types, however, traits cannot be instantiated.
+	
+	3.	Case Class : A Case Class is just like a regular class, which has a feature for modeling unchangeable data. 
+					 It is also constructive in pattern matching. It has been defined with a modifier case, 
+					 due to this case keyword, we can get some benefits to stop oneself from doing a sections of codes 
+					 that have to be included in many places with little or no alteration.
+	
+	4.	Case Object : A Case Object is also like an object, which has more attributes than a regular Object. 
+					  It is a blend of both case classes and object. A case object has some more features than a regular object.
+					  It is serializable and it has a by default hashCode implementation.
+					  
+	5.	Class : same as java.
+	
+13.	Types of Collections:
+	1.	Sequences:
+		-contains Collections like: Vector, Streams, List, Queue, String, Stack
+	
+	2.	Sets:
+		-contains Collections like: HashSet, SortedSet, TreeSet, BitSet, ListSet
+	
+	3.	Maps:
+		-contains Collections like:	HashMap, SortedMap, TreeMap, ListMap
+		
+14.	Scala provides parallel Collections to process data faster with no/minimal overhead:
+	-ParArray is for Parallel Array.
+	-ParVector
+	-ParHashMap etc.
+	
+15.	things to check before using parallel Collections:
+	-use PC when you have huge dataset.
+	-PC took lot more space then sequential Collections.
+	-change in order of dataset each time you us PC.
+	
+16.	

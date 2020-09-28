@@ -58,7 +58,7 @@
 20. ldif stores user info with base dn i.e dc=springframework,dc=org
 	that we configure in application.properties file.
 	
-21.	Another way is JWT i.e JSON Web Tokens, http is stateless if you only hit url and try to hit another url another time it wont know who u are.
+21.	JWT i.e JSON Web Tokens, http is stateless if you only hit url and try to hit another url another time it wont know who u are.
 	for that purpose we need JWT.
 	
 22.	previously a shared cache is maintained between multiple web app or services but if shared cache fails everything fails.

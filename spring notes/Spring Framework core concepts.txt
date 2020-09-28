@@ -90,3 +90,5 @@
 29.	ApplicationContext have proxies to all original classes.
 
 30.	Aspects are reusable block of code that injected in application at runtime.
+
+31. pointcut is like rule and joinpoint is that follow this pointcut.
