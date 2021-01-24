@@ -1,0 +1,36 @@
+1. Use fastIO to get rid of time limit exceed with basic Sout.
+
+2. Bitwise operator hacks:
+	a.	do not use << or >> with negative numbers, it will lead to undefined results.
+	
+	b.	The left-shift and right-shift operators are equivalent to multiplication and division by 2 respectively.
+	
+	c.	The & operator can be used to quickly check if a number is odd or even. The value of expression (x & 1) would be 	   non-zero only if x is odd, otherwise the value would be zero.
+	
+	d.	If we want to set a bit at nth position in number ‘num’:
+		-left shift ‘1’ to n position via (1<<n)
+		-Then, use ‘OR’ operator to set bit at that position.
+		-example: num |= (1 << n)
+	
+	e.	to unset or clear a bit at nth position
+		-num &= (~(1 << pos)); 
+		
+	f.	to toggle bit at nth position
+		-num ^= (1 << pos);
+		
+	g.	1's compliment
+		- (~num)
+	
+	h. 2's compliment
+		-(~num+1)
+		
+	i.	Upper case English alphabet to lower case(example : A -> 01000001          a -> 01100001)
+		-we need to set 5th bit to 1 then | needed and "space" has :00100000 5th bit as 1 so
+		-ch |= ' ';
+		
+	j.	Lower case English alphabet to upper case
+		-ch &= '_’ ;
+		
+	k.	Find XOR of all subsets of a set. We can do it in O(1) time. The answer is always 0 if given set has more than one elements. For set with single element, the answer is value of single element. because subset of set are always 2^n(2 to the power n) and xor will negatve every element.
+	
+3.	

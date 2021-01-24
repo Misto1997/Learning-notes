@@ -29,7 +29,7 @@
 29. in java 1.8 we can define static method in interface and also declare variable but they are by default constant(final);
 30. AerithmeticException extends RuntimeException and RuntimeException extends Exception same for all other Exceptions.
 31. thread is a unit of process or a part of process.
-32. by default every java code has a thread i.e main() meothod thread.
+32. by default every java code has a thread i.e main() method thread.
 33. multiple threads works in parallel to achieve work faster than single thread working alone.
 34. every thread needs a method called run() to process anything and run () is called by start() like t1.start();.
 35. if u are not able to extends thread class then you can use Runnable interface.
@@ -76,5 +76,5 @@
 73. Instance intializer block is invoked at the time of object creation. The java compiler copies the instance initializer block in the constructor after the first statement super(). So firstly, constructor is invoked.
     example(constructor(){super();rest work inside constructor})  super calls inilializer block first and then constructor statements and if parent class present then parent class first then initializer and then constructor statements.
 74. Integer a=b; is called autoboxing and int b=a is called unboxing.
-75. String is Immutable as variable shares common pool for similar values and StringBuilder is mutable and Usync and StringBuffer is mutable and sync.
+75. String is Immutable as variable shares common pool for similar values and StringBuilder is mutable and Async and StringBuffer is mutable and sync.
 76. 

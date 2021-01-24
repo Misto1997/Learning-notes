@@ -7,12 +7,12 @@
 		-it is serverless
 	
 3.	Usage:-
-		-read data from various source, organize it, clean it, validate it, format it and move to other datbase.It provides you common place for decision making.
+		-read data from various source, organize it, clean it, validate it, format it and move to other database.It provides you common place for decision making.
 		-example: you can read from s3 Bucket, create catalog and querying with aws athena.
 	
 4.	Architecture:-
-		-we define a crawler with meta data table defination, it points to a data source and creates coresponding meta data table defination in the catalog, 
-			catalog contains some other meta data definations used for ETL jobs.
+		-we define a crawler with meta data table definition, it points to a data source and creates coresponding meta data table defination in the catalog, 
+			catalog contains some other meta data definitions used for ETL jobs.
 		-you can run ETL Script on demand or schedule it or event driven.
 		-scripts run, it extract data from data source transform it and load in some data target.
 		-scripts runs in apache spark env. in aws glue.
@@ -50,7 +50,7 @@
 	-Job:-
 		-business logic required for ETL. initiated by triggers
 		
-	-noteook server:- 
+	-notebook server:- 
 		-web based env. used to run statement.
 	
 	-script:-

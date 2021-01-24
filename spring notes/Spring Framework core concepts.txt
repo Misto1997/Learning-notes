@@ -76,7 +76,6 @@
 			-here Beans are ready to use.
 	-Use phase-	can use beans in application
 	-Destruction phase
-	-Destruction phase
 		-begins when close is called on ApplicationContext
 		-anything annotated with  @PreDestroy are destroyed
 		-Beans are not destroyed in this process, its only destructed by garbage collector.

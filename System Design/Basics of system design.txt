@@ -23,14 +23,14 @@
 			 taken care.
 		
 	2.	CAP(consistency availability partitioning) theorem
-		-consistency means you read have most recent updated write.
-		-availability means what are getting might be most recent data or maybe not.
+		-consistency means your read have most recent updated write.
+		-availability means what you are getting might be most recent data or maybe not.
 		-partitioning means there might be chances of packet missing while transfering over network.
 		-you can only achieve only two of these three at a time and partitioning must be there so either c or a with p.
 		-sql mostly prefer c with p and nosql prefer a with p.
 		
 	3.	ACID(atomicity consistency isolation durability) vs BASE(Basically Available, Soft state, Eventual consistency)
-		-rdbms are mostly based on ACID while NOSQl based mostly on BASE i.e if you data is available eventually it
+		-rdbms are mostly based on ACID while NOSQl based mostly on BASE i.e if your data is available eventually it
 		 become consistent when it stops receiving input.
 		 
 	4.	partitioning/sharding of data i.e you cant have huge amount of data in one place and hence you need to split data

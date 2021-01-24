@@ -15,7 +15,7 @@
 	Alien a=context.getBean(Alien.class);
 	
 5.	It follows a singleton design pattern so even if you create object of same class many times it will give you one object only.
-	and if you want many objects on demand you need to define another annotation in your class i.e @Score(value="prototype").
+	and if you want many objects on demand you need to define another annotation in your class i.e @Scope(value="prototype").
 	it creates object only on calling getBean unlike in singleton creates object on creating object of ConfigurableApplicationContext.
 	
 6.	and basically it is done to build dependencies injection so that it would be loosely coupled.
@@ -34,7 +34,7 @@
 	
 10.	Spring Uses RequestDispatcher by default for sending values.
 
-11.	Spring provides and special class i.e ModelAndView class which can hold 2 things:-
+11.	Spring provides a special class i.e ModelAndView class which can hold 2 things:-
 	1-> view(ex. your jsp page name)
 	2->multiple objects(ex. your data values)
 	and this data will be easily send to your view using requestDispatcher which is inbuild used by your spring.

@@ -1,0 +1,79 @@
+1.	A RESTful API is an architectural style for an application program interface (API) that uses HTTP requests to access and use data.
+
+2.	RESTful API Design and Architecture Constraints.
+	a.	Use of a uniform interface (UI). Resources should be uniquely identifiable through a single URL, and only by using the underlying methods of the network protocol, such as DELETE, PUT and GET with HTTP, should it be possible to manipulate a resource.
+	
+	b.	Client-server based. There should be a clear delineation between the client and server.
+	
+	c.	Stateless operations. All client-server operations should be stateless, and any state management that is required should take place on the client, not the server.
+	
+	d.	RESTful resource caching. All resources should allow caching unless explicitly indicated that caching is not possible.
+	
+	e.	Layered system. REST allows for an architecture composed of multiple layers of servers.
+	
+	f.	Code on demand. Most of the time, a server will send back static representations of resources in the form of XML or JSON. However, when necessary, servers can send executable code to the client.
+	
+3.	REST vs SOAP:-
+	-SOAP stands for Simple Object Access Protocol whereas REST stands for Representational State Transfer.
+	-SOAP is a protocol whereas REST is an architectural pattern.
+	-SOAP uses service interfaces to expose its functionality to client applications while REST uses Uniform Service locators to access to the components on the hardware device.
+	-SOAP needs more bandwidth for its usage whereas REST doesn’t need much bandwidth.
+	-SOAP only works with XML formats whereas REST work with plain text, XML, HTML and JSON.
+	-SOAP cannot make use of REST whereas REST can make use of SOAP.
+
+4. Standards to be followed while creating rest API's:
+
+	a.	URLs should contain only nouns, never verbs, unless you are deliberately adding something to your API that doesn’t fit the CRUD paradigm.
+	
+	b.	The nouns in URLs are the same that describe your domain model.
+		ex: /users to address CRUD related to user  , /address to address CRUD related to address
+		
+	c.	Use lowercase (/items not /Items) to avoid the ambiguity around URL case-sensitivity.
+	
+	d.	For individual resources, include resource identifiers in the path, not the query (/contacts/22 instead of /contacts?id=22).
+	
+	e.	Paths that end with a resource name (and typically no trailing slash) are used to list multiple items (/files) or create items without specifying an identifier.
+	
+	f.	Paths can indicate a hierarchy of subresources (/contacts/22/addresses), but API designers should avoid complex structures that require more than two levels of nesting.
+	
+	g.	Nouns should be in the plural form (/files instead of /file) unless they describe a singleton.
+	
+	h.	Nouns that are compounds of multiple words should use a hyphen as a separator (/legal-documents). There’s a very mundane reason for this: when URLs are hyperlinks, they are often underlined, which would render an underscore separator invisible.
+	
+	i.	URLs should never reveal the underlying implementation (/resources not /api.php/resources).
+	
+	j.	The query part of the URL is for search and filtering and commonly used with a resource list endpoint (/contacts?first_name=Anna&limit=20).
+	
+	k.	These are our resources example:
+			-All contacts: /contacts
+			-Individual contact: /contacts/{cID}
+			-Notes for contact: /contacts/{cID}/notes
+			-Individual note: /contacts/{cID}/notes/{nID}
+			-Emails for contact: /contacts/{cID}/emails
+			-Individual email: /email/{eID}
+			-GET /contacts/{cID}/notes
+			-POST /contacts/{cID}/notes
+			-GET /contacts/{cID}/notes/{nID}
+			-PUT /contacts/{cID}/notes/{nID}
+			-DELETE /contacts/{cID}/notes/{nID}
+	
+	l. specific examples:
+		-GET all users:- /users
+		-GET specific user:- /users/{userId}
+		-GET user's related comments:- /users/{userId}/comments
+		-GET user's related specific comment:- /users/{userId}/comments/{commentId}
+		
+		-POST single or multiple user:- /users
+		-POST comments for a user:- /users/{userId}/comments
+		
+		-PUT to update bulk users:- /users
+		-PUT to update single user:- /users/{userId}
+		-PUT to update bulk comments:- /users/{userId}/comments
+		-PUT to update single comment for user:- /users/{userId}/comments/{commentId}
+		
+		-DELETE bulk users:- /users
+		-DELETE single user:- /users/{userId}
+		-DELETE bulk comments for a user:- /user{userId}/comments
+		-DELETE single comment for a user:- /user/{userId}/comments/{commentId}
+
+	

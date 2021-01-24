@@ -16,103 +16,11 @@
 	a.	deployement/architecture complexity.
 	b.	service discovery.
 	and many more...
-
-5.	point to remember :- we should not return list in api call because in future if requirement changes and some other service requires object on call		
-	you need to change it and your code breakes for those who are consuming api for List. Its better to use Object Wrapper and List as a part of that wrapper
-	so that it will be backword compatible in future.
 	
-6.	RestTemplates are thread safe and hence one call cannot affect another call.
-
-7.	We can use webclient instead of RestTemplates that support both sync and async calls.
-
-8.	Service discovery:-
-	1-	client side service discovery:- client checks for service on discovery server and then calls the service. like checks phonebook and then call the number.
-	2-	server side service discovery:-	client call server to call service and server calls that service.
+5.	Micro services are used for specific purpose and hence not that strict but Service Oriented architecture
+    is like a single service(eg. IP locator service) that ca be used by anyone and hence it is more generic and strict.
 	
-9.	Spring cloud uses client side service discovery and it uses Eureka for this or we can configure some other technology.
-
-10.	the discovery server is our Eureka server and all services will act as eureka client and also the cleint is also a eureka client.
-
-11. even eureka server consider itself as eureka client and hence you need to prevent server from registering itself or from other eureka servers
-	at application.properties file. It is useful when you need multiple instance of servers.
-
-12.	by default eureka client search for eureko server default port address but we can also configure it. 
-
-13.	@LoadBalanced does the service discovery. it does client side service discovery but library is doing everything for us so it look like server side discovery.
-	it also does client side load balancing i.e if you run same service on 2 different port both will get registered to eureko i.e 2 instances created.
-	it picks any out of 2 depend upon load.
-
-14.	DiscoveryClient class is used to get instance of any client based on service id.
-
-15.	Eureka server by default keep checking weather client is alive or not. if it doesnt get ping from any client it deregister it.
-
-16. by default eureka cached everything so if eureka server goes down you will get answer from cache.
-
-17.	fault tolerance means what tolerance of your system for a perticular fault i.e how a single fault can you affect your system (few service will go down
-	, all services go down or something etc)
-
-18.	Resilience means how many fault your system can tolerate.
-
-19.	if your one service is down rest dependent services will fail to work so one way is to make multiple instance of services i.e run one service or multiple ports.
-	so that if one goes down another services still works.(@LoadBalanced will take care of multiple instance registry and discovery).
-	
-20.	if a microservice is slow it may cause other services become slow even they are independent of each other as there might be some other service consuming both
-	and there is alot of thread waiting for response from slow microservice causing increase waiting time and maybe maximum limit is reached for new thread creation.
-	
-21.	so one solution to these problem is timeout, we can create timeout for each thread, after given time if that thread doesnt respond it will get destroyed.
-	it is not an ideal solution as still another service may get slow due to limit i.e what if request are coming much faster.
-
-22.	in any fault tolerance situation what we need to do is :-
-	-detect what is wrong
-	-take temporary steps to avoid the situation getting worse
-	-deactivate the problem component so that it doesnt affect downstream components.
-	
-23.	circuit breaker pattern implements above solution  and this is the prefered way to solve slow down problem.
-	paramter to set for circuit to be trip:-
-		-Last n requests to consider for the decision(5 requests)
-		-how many times of those should fail? (2 requests fails)
-		-timeout duration (3 sec for each request)
-	parameter to set for circuit to be back :-
-		-how long after a circuit to try again (5 sec after circuit breaks).
-		
-24.	we need some fallback when circuit is break to respond something for any request for that service
-	-throw an error
-	-return a fallback "default" response.
-	-save previous responses in cache and use that when possible.
-	
-25.	Hystrix is a open source library that implements the circuit breaker pattern.
-	you need to add spring-cloud-starter-netflix-hystrix dependency, add @EnableCircuitBreaker annotation to service where you want circuit breaker,
-	@HystrixCommand annotation to function where you want circuit to be break on matching parameters and configure hystric behavior for circuit break.
-	
-26.	we add a fallbackMethod to @HystrixCommand annotation telling that use fallbackMethod when circuit breaks.
-	without adding any behavior default behavior works i.e if any called service down it will call fallBackMethod.
-	
-27.	Hystrix wraps your API class to a proxy class so anyone calls the API class instead if class instance it will get proxy instance and keeps on checking	
-	if something gone wrong it will redirect to fallback method.28.
-	
-28.	if a external service calling a function inside class than proxy class instance will intercept and gives fallback if fails but if function inside class
-	is calling another function that proxy class cant do anything and hence @HystrixCommand wont work so we need put those methods to some another class and
-	autowired them so that proxy instance can intercept that class for method and @HystrixCommand will work.
-	
-29.	you can use @EnableHystrixDashboard with hystrixdashboard dependency and properties in application.properties file
-	to enables dashboard that tells status of circuits. and check status on  localhost:portnumber/hystrix
-	and checks your app status http://localhost:portNumber/actuator/hystrix.stream inside dashboard.
-
-30.	one more way to handle such slow microservice problem is bulkhead Pattern, in this you create different thread pool for services being called so if one	
-	service is slow his pool is full of request but it wont affect other services as they have different thread pool.
-	
-31.	in bulkhead is inside @HystrixCommand you need to define 2 things
-	1- threadPoolKey - a key for that function
-	2- threadPoolProperties that defines 2 properties:-
-		-coreSize(max size of thread pool)
-		-maxQueueSize(maximum number of request can wait in queue)
-
-32.	there are some features which are common for all microservices like authentication, authorization, fault tolerance etc. in order save code duplication
-	these features are to be implemented at API gateway level, all levels must pass through this gateway.
-
-33.	spring cloud provides zuul as api gateway for routing and filtering various features.
-
-34.	12 factors for cloud native application development
+6.	12 factors for cloud native application development
 		1.	codebase :- managing code in non prod environment and prod environment i.e version control(GIT).
 	
 		2.	managing dependencies :- multiple application should not share single dependencies base. each application have their own dependency base.
@@ -143,4 +51,383 @@
 		11. logs :- use proper logs to log output. it is critical for many purpose.
 	
 		12.	Administering :- tasks like database migration or executing one-off scripts in the environment. 
-								To avoid messing with the database, use the tooling you built alongside your app to go and check the database.
+							 To avoid messing with the database, use the tooling you built alongside your app to go and check the database.
+							 
+7.	point to remember :- we should not return list in api call because in future if requirement changes and some other service requires object on call		
+	you need to change it and your code breakes for those who are consuming api for List. Its better to use Object Wrapper and List as a part of that wrapper
+	so that it will be backword compatible in future.
+	
+8.	RestTemplates are thread safe and hence one call cannot affect another call.
+
+9.	We can use webclient instead of RestTemplates that support both sync and async calls.
+
+10.	(Central configuration system)Spring Cloud Config Server:
+
+	-	It provides a common central configuration service(application configuration) that helps in maintaining config 
+		for large and complexity distributed system.
+		- other frameworks like Chef, puppet, Ansible provide similar kind of behavior but they won't provide dynamic config.
+		  if you change anything on files you have to deploy them again and other configuration needs to be taken care of and hence
+		  its purely deployement oriented.
+		
+		-Cloud config server based on pull model, provides http based api for external cofiguration and no redeployment needed
+		 on changes.
+		 
+		-it requires 3 component:
+			-configuration repository where your all config files resides.
+			-cloud config server which will pull all these config and provides api based access to other services.
+			-client service which will use these config. via config server.
+			
+		- one special thing here is, apart from cloud config dependency you also need actuator dependency with refresh feature
+		  enable so that you can hit refresh and update values dynamically.
+		  eg(http://localhost:8082/actuator/refresh) here port is same as your client service is using.
+		  
+		-your property file name in configuration repository will be like serviceName-profileName.properties.
+		 
+		-you need few things that you want to be be ready before application context initialized so for that instead of
+		 application.properties you have to use bootstrap.properties.
+		 
+		-you have to use @RefreshScope at class level for bean initialization. ex. if you want to update bean configuration on run time
+		 so when you hit refresh api via acutator and you have @RefreshScope annotation then beans inside class will also get
+		 updated with those changes.
+		 
+11.	(Service Registry) Eureka Client:
+
+	-Service discovery:-
+		1-	client side service discovery:- client checks for service on service registry and then calls the service. 
+			like checks phonebook and then call the number.
+			
+			-Benefits:
+				-Centralized server is not required to call/route services
+			-drawbacks:
+				-Every service/client has to provide implementation for lookup.
+			-best use cases:
+				-When all services are implemented in same framework.
+				-most of the services has built in implementation for lookup.
+				
+		2-	server side service discovery:-	client calls (load balancer) to call service, load balancer checks for relevant
+		    service detail on service registry and calls that service.
+			
+			-Benefits:
+				-client/service is independent of lookup implementation.
+			-drawbacks:
+			    -Single point of failure i.e load balancer
+				-Extra component is required to call a service.
+			-best use cases:
+			    -application has different framework for different service.
+		
+	-Each service gets register under Service Registry(kind of database that store services details) and 
+	 can be accessed via Discovery Service(it is like a lookup table).
+	
+	-Spring cloud uses client side service discovery and it uses Eureka for this or we can configure some other technology.
+	
+	-the discovery server is our Eureka server and all services will act as eureka client.
+	
+	-even eureka server consider itself as eureka client and hence you need to prevent server from registering itself or 
+	 from other eureka servers at application.properties file. It is useful when you need multiple instance of servers.
+	 
+	-by default eureka client search for eureko server default port address(http://localhost:8761/) but we can also configure it.
+	
+	-@LoadBalanced does the service discovery. it does client side service discovery but library is doing everything for us 
+	 so it look like server side discovery.
+	 it also does client side load balancing i.e if you run same service on 2 different port both will get registered to eureko
+	 i.e 2 instances created. it picks any out of 2 depend upon load.
+	 
+	-DiscoveryClient class is used to get instance of any client based on service id.
+	
+	-Eureka server by default keep checking weather client is alive or not, Client continuesly sending ping to Eureka.
+	 if it doesnt get ping from any client it deregister it.
+	 
+	-by default eureka cached everything so if eureka server goes down you will get answer from cache.
+	
+12. API Gateway(zuul):
+
+    -There are some features which are common for all microservices like authentication, authorization,logging, 
+	 header validation, fault tolerance etc. 
+	 in order to save code duplication these features are to be implemented at API gateway level, 
+	 all levels must pass through this gateway.
+
+    -spring cloud provides zuul as api gateway for routing and filtering various features.
+	
+	-drawbacks:
+	   -Single point for whole application failure, security breaches and stuff like that but we can improve that via
+	    loadbalancing, jwt token for security etc.
+	
+	-when we need api gateway:
+	   -If you have n number of microservices and to access that you need to remember n public ip address and also it 
+	    increases the chances of security breaches as ip's are public.
+	    to resolve this issue api gateway introduced where api gateway service is public with high security and all other
+	    services are private and can be access via api gateway only as they are on same network api gateway can access them.
+	  
+	   -It also decreases latency(delay in response) as calling services over the internet will take more time(assume 2 sec) 
+	    and calling n services means n*2 sec. but when you have api gateway in between it will take 2 sec to call api gateway and
+        api gateway will take around(.5 sec) to call n services as they are in same network so response is much more faster
+        and hence total time will be (2+ 0.5 sec).
+       
+	   -it also makes application loosely coupled as user only needs to know about api gateway information and no need to
+	    configure each microservice individually and change them if they microservices config. changes.
+		
+	   -it also provides abstraction as only necessary details are exposed and internal details are hidden i.e details of
+	    microservices.
+		
+	   -Response caching can be implemented at api gateway so that for same request you dont have to go till db for response.
+	    cache will store first time requested response and on getting same request can give response from cache only,Its
+		faster.
+	   
+	   -Dynamic routing can also be implemented using api gateway, if there are multiple version of that microservice is available
+	    than based on your request(lets say for alpha user or beta user) you will redirected to that version.
+	   
+	   -Request Rate limiter, you can limit the number of request per user or total request to each microservice.
+	   
+	-Configuring routes via zuul:
+		-Automated mapping of routes via service discovery.
+			-this can be done when you dont specify any manual specs for zuul and all the micro services are been called
+			 via default service-name eg: localhost:8888/admin-service/*.
+			 here localhost:8888 is zuul ip and admin-service/* is admin service name and whatever request url you have.
+		
+		-manual mapping of routes using service discovery
+		    -you can fine grain your url with zuul configuration, instead of picking default microservice name you can
+			 provide alternate path name for that microservice.
+			 eg: localhost:8888/myservice/* , and in application.properties file do like
+			 zuul.routes.myservice.url=original-service-name
+			 
+	    -manual mapping of routes using static url's:
+			-you can fine grain your url with zuul configuration, instead of picking default microservice name you can
+			 provide alternate path name for that microservice.even if you are using third party service
+			 eg:localhost:8888/myservice/* , and in application.properties file do like
+			 zuul.routes.original-service-name.path=/myservice/**
+			 
+			 zuul.routes.original-service-name.serviceId=original-service-name
+			 or
+			 zuul.routes.original-service-name.url=http://localhost:8666/path-url(if you are using third party service)
+			 
+	-Zuul Filter:
+	    -zuul allow you to use custom logic for implementation of your cross cutting concerns like logging,authentication etc.
+		 filters allow you to implement a chain of business logic that each service request should pass.
+		
+		-zuul supports 3 types of filter:
+		    -Pre Filters
+				-it works when request comes to zuul api gateway.
+			-Post Filters
+				-once api gateway gets response from service it post filter will work.
+			-Route Filters
+				-route filter allow you to cofigure that you can route user to another location and skip default routing given
+				 in zuul.
+				 
+13. Feign Client:
+	-Feign is a declarative web service client. It makes writing web service clients easier.
+	
+    -Using feign client you  do not need to hardcode urls  like we have to do using RestTemplate.
+	
+	-Feign integrates with Ribbon) and Eureka automatically, means it automatically does load balancing for us via
+	 Ribbon and then calling Eureka for that service discovery.
+	
+	-Feign provides very easy way to call RESTful services.
+	
+	-It can also integrate with Hystrix for fault taularance.
+	
+14.Fault tolerance(Hystrix):
+	-fault tolerance means what tolerance of your system for a perticular fault i.e how a single fault can you affect 
+	 your system (few service will go down then all services go down or something etc).
+
+	-Resilience means how many fault your system can tolerate.
+
+	-if your one service is down rest dependent services will fail to work so one way is to make multiple instance of services 
+	 i.e run one service or multiple ports. so that if one goes down another services still works.
+	 (@LoadBalanced will take care of multiple instance registry and discovery).
+	
+	-if a microservice is slow it may cause other services become slow even they are independent of each other as there might 
+	 be some other service consuming both and there is alot of thread waiting for response from slow microservice 
+	 causing increase waiting time and maybe maximum limit is reached for new thread creation.
+	
+ 	-so one solution to these problem is timeout, we can create timeout for each thread, after given time if that thread 
+	 doesnt respond it will get destroyed. it is not an ideal solution as still another service may get slow due to limit 
+	 i.e what if request are coming much faster.
+
+	-in any fault tolerance situation what we need to do is :-
+		-detect what is wrong
+		-take temporary steps to avoid the situation getting worse
+		-deactivate the problem component so that it doesnt affect downstream components.
+	
+	-circuit breaker pattern implements above solution  and this is the prefered way to solve slow down problem.
+	 paramter to set for circuit to be trip:-
+		-Last n requests to consider for the decision(5 requests)
+		-how many times of those should fail? (2 requests fails)
+		-timeout duration (3 sec for each request)
+	 parameter to set for circuit to be back :-
+		-how long after a circuit to try again (5 sec after circuit breaks).
+		
+	-we need some fallback when circuit is break to respond something for any request for that service
+		-throw an error
+		-return a fallback "default" response.
+		-save previous responses in cache and use that when possible.
+	
+	-Hystrix is a open source library that implements the circuit breaker pattern.
+	 you need to add spring-cloud-starter-netflix-hystrix dependency, add @EnableCircuitBreaker annotation to service 
+	 where you want circuit breaker,@HystrixCommand annotation to function where you want circuit to be break on 
+	 matching parameters and configure hystric behavior for circuit break.
+	
+	-we add a fallbackMethod to @HystrixCommand annotation telling that use fallbackMethod when circuit breaks.
+	 without adding any behavior default behavior works i.e if any called service down it will call fallBackMethod.
+	
+	-Hystrix wraps your API class to a proxy class so anyone calls the API class instead if class instance it will get 
+	 proxy instance and keeps on checking if something gone wrong it will redirect to fallback method.
+	
+	-if a external service calling a function inside class than proxy class instance will intercept and gives fallback if 
+	 fails but if function inside class is calling another function that proxy class cant do anything and hence @HystrixCommand 
+	 wont work so we need put those methods to some another class and autowired them so that proxy instance can 
+	 intercept that class for method and @HystrixCommand will work.
+	
+	-you can use @EnableHystrixDashboard with hystrixdashboard dependency and properties in application.properties file
+	 to enables dashboard that tells status of circuits. and check status on  localhost:portnumber/hystrix
+	 and checks your app status http://localhost:portNumber/actuator/hystrix.stream inside dashboard.
+
+	-one more way to handle such slow microservice problem is bulkhead Pattern, in this you create different thread pool for 
+	 services being called so if one service is slow his pool is full of request but it wont affect other services as 
+	 they have different thread pool.
+	
+	-in bulkhead is inside @HystrixCommand you need to define 2 things
+		1- threadPoolKey - a key for that function
+		2- threadPoolProperties that defines 2 properties:-
+			-coreSize(max size of thread pool)
+			-maxQueueSize(maximum number of request can wait in queue)
+
+15.	Microservices versionning:
+	
+	-it is required to maintain compatibility between multiple clients. some wants to use previous one and some want to 
+	 jump to new one.
+	
+	-Versionning is required when you have some breaking changes in your application like change in data format,
+	 removal of some features etc.
+	 
+	-Ways of versioning:
+		-Versionning in URI:
+			-you can add version number at your uri only like localhost:8080/v1/books/getbooks , localhost:8080/v2/books/getbooks
+			-it is helpful for developer as they can tell which version is there.
+			
+		-Header versioning:
+			-you create custom header where you can add version number in header only like
+				-version=2.1 or version=2.2
+			-with these your uri remain same you just need to change header for your requests.
+				
+16.	Microservices deployment:
+	
+	-Big Bang deployement:
+		-a version contains huge number of changes,regress testing and like moving from windows xp to windows 7.
+		-ussually contains large amount of changes in your application.
+		-completion time is ussually pretty long.
+		
+	-Blue-Green or Red-Black or A/b deployement:
+		-two identical production environment are running in parallel one with existing one blue and one with new version green
+		-currently users are routed to blue env. and on green env testing is being going on.
+		-once testing is done users are routed to green env.
+		
+	-Canary deployment:
+		-you will introduce partial new version functionality along with old version and route some of the users to new version
+		-if everything goes well then you will slowly replace all old version functionality with new version and all users will
+		 use new version .
+		 
+17.	SAGA Pattern:
+
+	-A saga pattern is a sequence of local transactions where each transaction updates data within a single service.
+	-Then it publishes a event or message that trigger another transaction in a Saga.
+	
+	-Types of SAGA Pattern:
+		-Choreography based SAGA Pattern:
+			-In this the first service executes the transaction and then pulished an event. One or more services listen
+			 to that event and then executes thier transaction.
+			 
+			-If in this chain any services fails you need to rollback i.e again trigger a event a saying that services failed
+			 and do operation accordingly.
+			 
+			-eg: ORDER SERVICE-- created order event triggered -- PAYMENT SERVICE--build order event triggered-- STOCK SERVICE--
+				 order prepared event triggered-- DELIVERY SERVICE-- order delivered event triggered-- ORDER SERVICE(acknowledgement)
+				 
+				 now lets assume order fails at STOCK SERVICE(out of stock)
+				 ORDER SERVICE-- created order event triggered -- PAYMENT SERVICE--build order event triggered-- STOCK SERVICE--
+				 out of stock event(triggers 2 event one for PAYMENT SERVICE AND ONE FOR ORDER SERVICE)
+				 set payment status to refund and set order status to failed.
+				 
+			-benefits:-
+				-It is simple, easy to understand, does not require much effort to build.
+				-all participants are loosely coupled as they don’t have direct knowledge of each other.
+				-If your transaction involves 2 to 4 steps, it might be a very good fit.
+				
+			-drawbacks:-
+				-this approach can rapidly become confusing if you keep adding extra steps in your transaction as it is difficult to track which services listen to which events.
+				-it also might add a cyclic dependency between services as they have to subscribe to one another’s events.
+				- testing would be tricky to implement using this design, in order to simulate the transaction pattern you should have all services running.
+				 
+		-Command/Orchestration based SAGA Pattern;
+			-Define a new Service with the sole resposibility that will tell to all participant services what to do when to do.
+			
+			-The saga pattern orchestrator communicates with each service in a command/reply style telling them what operation should be performed.
+			
+			-eg: ORDER SERVICE saves a pending order and asks Order Saga Orchestrator (OSO service) to start a create order transaction.
+				 OSO SERVICE(it will trigger 3 events/commands to) PAYMENT SERVICE, STOCK SERVICE and DELIVERY SERVICE.
+				 
+				 In the case above, Order Saga Orchestrator knows what is the flow needed to execute a “create order” transaction. 
+				 If anything fails, it is also responsible for coordinating the rollback by sending commands to each participant 
+				 to undo the previous operation.
+				 
+				 now lets assume order fails at STOCK SERVICE(out of stock)
+				 
+				 ORDER SERVICE saves a pending order and asks Order Saga Orchestrator (OSO service) to start a create order transaction.
+				 OSO SERVICE(it will trigger 3 events/commands to) PAYMENT SERVICE, STOCK SERVICE and DELIVERY SERVICE.
+				 
+				 OSO recognizes that the transaction has failed and starts the rollback:-
+				 In this case, only a single operation was executed successfully before the failure, 
+				 so OSO sends a Refund Client command to PAYMENT SERVICE and set the order state as failed.
+				 
+			benefits:-
+				-Avoid cyclic dependencies between services, as the saga orchestrator invokes the saga participants but 
+				 the participants do not invoke the orchestrator.
+				-Centralize the orchestration of the distributed transaction.
+				-Reduce participants’ complexity as they only need to execute/reply commands.
+				-Easier to be implemented and tested.
+				-The transaction complexity remains linear when new steps are added.
+				-Rollbacks are easier to manage.
+				-If you have a second transaction willing to change the same target object, you can easily put it on hold 
+				 on the orchestrator until the first transaction ends.
+
+			drawbacks:-
+				-risk of concentrating too much logic in the orchestrator and ending up with an architecture where the 
+				 smart orchestrator tells dumb services what to do.
+				 
+				-it slightly increases your infrastructure complexity as you will need to manage an extra service.
+			
+	-Tips to implement SAGA Pattern better:-
+		-Create a Unique Id per Transaction:
+			-Having a unique identifier for each transaction is a common technique for traceability, but it also helps 
+			 participants to have a standard way to request data from each other. By using a transaction Id, for instance, 
+			 Delivery Service could ask Stock Service where to pick up the products and double check with the Payment Service 
+			 if the order was paid.
+			
+		-Add the Reply Address Within the Command:
+			-Instead of designing your participants to reply to a fixed address, consider sending the reply address 
+			 within the message, this way you enable your participants to reply to multiple orchestrators.
+			 
+		-Idempotent Operations:
+			-If you are using queues for communication between services (like SQS, Kafka, RabbitMQ, etc.), 
+			 make your operations Idempotent. Most of those queues might deliver the same message twice.
+			 It also might increase the fault tolerance of your service. Quite often a bug in a client might 
+			 trigger/replay unwanted messages and mess up with your database.
+			 
+		-Avoiding Synchronous Communications:
+			-As the transaction goes, don’t forget to add into the message all the data needed for each operation 
+			 to be executed. The whole goal is to avoid synchronous calls between the services just to request more data. 
+			 It will enable your services to execute their local transactions even when other services are offline.
+			 The downside is that your orchestrator will be slightly more complex as you will need to manipulate 
+			 the requests/responses of each step, so be aware of the tradeoffs.
+		 
+18. Microservices best practices:-
+
+	-one db per service
+	-one container per service
+	-asynchronous communication
+	-use automation for independent deployments
+			
+			
+			
+		
+	
+	
