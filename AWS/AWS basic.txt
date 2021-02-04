@@ -1,0 +1,10 @@
+1.	AWS is a cloud provider	which provides servers and services on demand.
+
+2.	AWS has data center's all around world and these data center are called region's(cluster of data centers).
+
+3.	it provides different availability zones inside each region(min-2 max-6)
+	ex:	us-east-1 region will have 3 zones names us-east-1a, us-east-1b and us-east-1c
+		-Each zone has multiple data centers with reduntant power and networking.
+		-and all are separated from each other physically but connected via high bandwidth and ultra low latency networking.
+	
+4.	

@@ -1,0 +1,27 @@
+1.	you should not use your root account.
+
+2.	IAM(Identity and Access Management) should be used by individual.
+
+3.	IAM role is kind of heart of AWS almost all services requires IAM role for security.
+
+4.	we have some policies for each IAM role written in JSON and also you can secure your IAM with MFA(multi factor auth)
+
+5.	IAM is global and is going to be common across all region.
+
+6.	It's best to give user minimal amount of permissions they need to perform their jobs(least privilege principles).
+
+7.	IAM federation:
+	-big enterprices can have thier own repository of users with IAM.
+	-It uses SAML standards(Active Directory)
+	
+8.	Thumb rules for IAM:
+	-one IAM user per physical user
+	-one IAM role per Application
+
+9.	-you can create IAM user with some set of permissions and authenticate with custom or autogenerate password.
+	-you can add permissions also by adding that user to a group and user will inherit all permissions present in group.
+	-once your user is setup you should use that aws login url for specific IAM with iam credential instead of root user with
+	 common url.
+	
+10.	
+	

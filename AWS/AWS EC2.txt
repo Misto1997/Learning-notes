@@ -1,0 +1,268 @@
+1.	EC2 stands for Elastic Cloud Compute and capable for:
+	-provide virtual machine(EC2)
+	-storing adata on virtual drives(EBS)Elastic Block Store
+	-Distributing load across machines(ELB)Elastic Load Balancing
+	-Scaling the services using auto scaling group (ASG)
+	
+2.	Steps to launch EC2 instance:
+	-choose you required type AMI(Amazon machine image) example linux 2, it decides what type of machine(OS) you want to use
+	-choose the instance type, it gives to vaiorus option to use no. cpu, memory, letworking capacity as per your requirement.
+	-configure instance details, you can configure different settings for that instance like ip,subnet, no. of instance etc.
+	-add storage, you can add the amount of storage you want to use.
+	-add tags, you can add key value pairs to assign naming to your instance.
+	-configure security groups, it is used to set firewall rules for your instance.
+	-review and launch, after clicking on launch you have to select a key value pair and download for future reference to access
+		EC2.
+		
+3.	We need SSH for using EC2
+	-SSH or Secure Shell is a network communication protocol that enables two computers to communicate.
+	-SSH is often used to "login" and perform operations on remote computers but it may also be used for transferring data.
+	-it helps specially when you are communicating through unsecure network as communication is encrypted.
+	
+4.	steps to use ssh to access EC2
+	-place your key(pem file)that you have downloaded for that EC2 instance in secure directory
+	-open cmd in that directory
+	-use this command to connect to remote machine 
+		-ssh -i <yourkeyname.pem> ec2-user@<ec2 instance public ip>
+		-eg: ssh -i xyz.pem ec2-user@13.233.115.187
+	-you might get warning saying unprotected  private key file(permission 0644 for your key is open) that means it can be accesible buy anyone if key got leaked.
+	-to fix this warning/error use this command
+		-chmod 0400 <yourkeyname.pem>(not present in windows 10)
+		-you need havev right user with all permission in windows to to resolve the same error
+		
+	-if you have windows version less than 10 you might need putty to access ssh as its not directly supported.
+	-putty is a ssh client
+	-steps to do ssh using putty
+		-open puttyGen
+		-we need to convert pem key into ppk(putty private key) format for putty
+		-load your pem file here and click on save privae key
+		-open putty enter host name as ec2-user@<ec2 instance public ip>
+		-go to ssh->auth and browse our ppk key there.
+		-save your session with any name and open
+		-command line will open with remote access
+		
+	-if you dont want to these steps you can use EC2 Connect to have same thing
+		-in ec2 dashboard goto connect tab
+		-select EC2 instance connect and use ec2-user as user and click on connect
+		
+5.	Security group in EC2:
+	-Security Groups are the fundamental of network security in AWS
+	-They control how traffic is allowed into or out of our EC2 Machines.
+	-for inbound(incoming) traffic if you remove all inbound rules then you will ended up with timeout on ssh command means you cant connect to your remote machine anymore.
+	-you can add ay rules like rule type(all,only ssh,only http,only LDAP etc), Protocol(all,tcp etc), portrange(0-65535),
+	destination(custom,anywhere or your personal ip only) and description to define that rule.
+	-It Regulates:
+		-Access to Ports
+		-Authorised IP ranges – IPv4 and IPv6
+		-Control of inbound network (from other to the instance)
+		-Control of outbound network (from the instance to other)
+		
+	-Security group Can be attached to multiple instances
+	-specific to a region / VPC combination
+	-Does live “outside” the EC2 – if traffic is blocked the EC2 instance won’t see it.
+	-It’s good to maintain one separate security group for SSH access
+	-If your application is not accessible (time out), then it’s a security group issue
+	-If your application gives a “connection refused“ error, then it’s an application error or it’s not launched
+	-All inbound traffic is blocked by default
+	-All outbound traffic is authorised by default
+	-during load balancer you can allow another security group to access your EC2 with permissions granted to that security group.
+	
+6.	Private vs Public IP (IPv4) Fundamental Differences
+	• Public IP:
+		• Public IP means the machine can be identified on the internet (WWW)
+		• Must be unique across the whole web (not two machines can have the same public IP).
+		• Can be geo-located easily
+	• Private IP:
+		• Private IP means the machine can only be identified on a private network only
+		• The IP must be unique across the private network
+		• BUT two different private networks (two companies) can have the same IPs.
+		• Machines connect to WWW using a NAT + internet gateway (a proxy)
+		• Only a specified range of IPs can be used as private IP
+	
+7.	Elastic IPs:	(helps you configure static ip even on stop/start)
+	• When you stop and then start an EC2 instance, it can change its public IP.
+	• If you need to have a fixed public IP for your instance, you need an Elastic IP
+	• An Elastic IP is a public IPv4 IP you own as long as you don’t delete it
+	• You can attach it to one instance at a time
+	• With an Elastic IP address, you can mask the failure of an instance or software by rapidly remapping the address to    another instance in your account.
+	• You can only have 5 Elastic IP in your account (you can ask AWS to increase that).
+	• Overall, try to avoid using Elastic IP:
+	• They often reflect poor architectural decisions
+	• Instead, use a random public IP and register a DNS name to it
+	• Or, as we’ll see later, use a Load Balancer and don’t use a public IP
+	• By default, your EC2 machine comes with:
+		• A private IP for the internal AWS Network
+		• A public IP, for the WWW.
+	• When we are doing SSH into our EC2 machines:
+		• We can’t use a private IP, because we are not in the same network
+		• We can only use the public IP.
+	• If your machine is stopped and then started, the public IP can change
+	
+8.	to update your machine that you are using on EC2(linux 2 in our case)
+	-sudu su    (to switch user to root user to access all commands)
+	-yum update -y    (-y to promote without asking permission)
+			
+9.	to install apacher server in ec2 instance
+	-httpd is the Apache HyperText Transfer Protocol (HTTP) server program. It is designed to be run as a standalone daemon process.
+	-command to install apache server on linux machine
+		-yum install -y httpd.x86_64
+	-command to enable apache services
+		-systemctl enable httpd.service
+	-command to start apache services
+		-systemctl start httpd.service
+	-command to check server page
+		-curl localhost:80
+	-add security group for apache i.e http with port 80 and use browser to check server page status
+		-http://13.232.170.117:80
+	-to print hello world to this server
+		-echo "hello world" > var/www/html/index.html
+		
+10.	EC2 User Data:
+	• It is possible to bootstrap our instances using an EC2 User data script.
+	• bootstrapping means launching commands when a machine starts
+	• That script is only run once at the instance first start
+	• EC2 user data is used to automate boot tasks such as:
+		• Installing updates
+		• Installing software
+		• Downloading common files from the internet
+		• Anything you can think of
+	• The EC2 User Data Script runs with the root user
+	
+	-to automate process on bootup of instance
+		-under configuration advance tab under user data
+			-#!/bin/bash
+			 yum update -y
+			 yum install -y httpd.x86_64
+			 systemctl start httpd.service
+			 systemctl enable httpd.service
+			 echo "Hello World from $(hostname -f)" > /var/www/html/index.html
+	-once you place this and run your instance, everytime your instance launched this bootstrap script will run.
+	
+11.	EC2 Instance Launch Types
+	• On Demand Instances: short workload, predictable pricing
+		• Pay for what you use (billing per second, after the first minute)
+		• Has the highest cost but no upfront payment
+		• No long term commitment
+		• Recommended for short-term and un-interrupted workloads, where you can't predict how the application will behave.
+		
+	• Reserved: (MINIMUM 1 year)
+		• Up to 75% discount compared to On-demand
+		• Pay upfront for what you use with long term commitment
+		• Reservation period can be 1 or 3 years
+		• Reserve a specific instance type
+		• Recommended for steady state usage applications (think database)
+			• Reserved Instances: long workloads
+			• Convertible Reserved Instances: long workloads with flexible instances
+				• can change the EC2 instance type
+				• Up to 54% discount
+			• Scheduled Reserved Instances: example – every Thursday between 3 and 6 pm
+				• launch within time window you reserve
+				• When you require a fraction of day / week / month
+				
+	• Spot Instances: short workloads, for cheap, can lose instances (less reliable)
+		• Can get a discount of up to 90% compared to On-demand
+		• Instances that you can “lose” at any point of time if your max price is less than the current spot price
+		• The MOST cost-efficient instances in AWS
+		• Useful for workloads that are resilient to failure
+			• Batch jobs
+			• Data analysis
+			• Image processing
+		• Not great for critical jobs or databases
+		• Great combo: Reserved Instances for baseline + On-Demand & Spot for peaks
+		
+	• Dedicated Instances: no other customers will share your hardware
+		• Physical dedicated EC2 server for your use
+		• Full control of EC2 Instance placement
+		• Visibility into the underlying sockets / physical cores of the hardware
+		• Allocated for your account for a 3 year period reservation
+		• More expensive
+		• Useful for software that have complicated licensing model (BYOL – Bring Your Own License)
+		• Or for companies that have strong regulatory or compliance needs
+		
+	• Dedicated Hosts: book an entire physical server, control instance placement
+		• Instances running on hardware that’s dedicated to you
+		• May share hardware with other instances in same account
+		• No control over instance placement (can move hardware after Stop / Start)
+	
+12.	Which host is right for me?Hotel example
+	• On demand: coming and staying in resort whenever we like, we pay the full price
+	• Reserved: like planning ahead and if we plan to stay for a long time, we may get a good discount.
+	• Spot instances: the hotel allows people to bid for the empty rooms and the highest bidder keeps the rooms. You can get kicked out at any time
+	• Dedicated Hosts: We book an entire building of the resort
+	
+13.	Elastic Network Interfaces (ENI)
+	• Logical component in a VPC that represents a virtual network card
+	• The ENI can have the following attributes:
+		• Primary private IPv4, one or more secondary IPv4
+		• One Elastic IP (IPv4) per private IPv4
+		• One Public IPv4
+		• One or more security groups
+		• A MAC address
+	• You can create ENI independently and attach them on the fly (move them) on EC2 instances for failover
+	• Bound to a specific availability zone (AZ)
+	
+14.	EC2 Pricing
+	• EC2 instances prices (per hour) varies based on these parameters:
+		• Region you’re in
+		• Instance Type you’re using
+		• On-Demand vs Spot vs Reserved vs Dedicated Host
+		• Linux vs Windows vs Private OS (RHEL, SLES, Windows SQL)
+	• You are billed by the second, with a minimum of 60 seconds.
+	• You also pay for other factors such as storage, data transfer, fixed IP public addresses, load balancing
+	• You do not pay for the instance if the instance is stopped
+	
+15.	What’s an AMI(Amazon Machine Image)?
+	• AWS comes with base images such as:
+		• Ubuntu
+		• Fedora
+		• RedHat
+		• Windows
+		• Etc…
+	• These images can be customised at runtime using EC2 User data
+	• Using a custom built AMI can provide the following advantages:
+		• Pre-installed packages needed
+		• Faster boot time (no need for long ec2 user data at boot time)
+		• Machine comes configured with monitoring / enterprise software
+		• Security concerns – control over the machines in the network
+		• Control of maintenance and updates of AMIs over time
+		• Active Directory Integration out of the box
+		• Installing your app ahead of time (for faster deploys when auto-scaling)
+		• Using someone else’s AMI that is optimised for running an app, DB, etc…
+	• That’s an AMI – an image to use to create our instances
+	• AMIs can be built for Linux or Windows machines
+	• AMI are built for a specific AWS region (!)
+	
+16.	EC2 Instances Overview
+	• Instances have 5 distinct characteristics advertised on the website:
+		• The RAM (type, amount, generation)
+		• The CPU (type, make, frequency, generation, number of cores)
+		• The I/O (disk performance, EBS optimisations)
+		• The Network (network bandwidth, network latency)
+		• The Graphical Processing Unit (GPU)
+	• It may be daunting to choose the right instance type (there are over 50 of them) -
+	https://aws.amazon.com/ec2/instance-types/
+	• https://ec2instances.info/ can help with summarizing the types of instances
+	• R/C/P/G/H/X/I/F/Z/CR are specialised in RAM, CPU, I/O, Network, GPU
+	• M instance types are balanced
+	• T2/T3 instance types are “burstable”
+	
+17.	Burstable Instances (T2)
+		• AWS has the concept of burstable instances (T2 machines)
+		• Burst means that overall, the instance has OK CPU performance.
+		• When the machine needs to process something unexpected (a spike in load for example), it can burst, and CPU can be VERY good.
+		• If the machine bursts, it utilizes “burst credits”
+		• If all the credits are gone, the CPU becomes BAD
+		• If the machine stops bursting, credits are accumulated over time
+		• Burstable instances can be amazing to handle unexpected traffic and getting the insurance that it will be handled correctly
+		• If your instance consistently runs low on credit, you need to move to a different kind of non-burstable instance (all the ones described before).
+	
+18.	EC2 – Checklist
+		• Know how to SSH into EC2 (and change .pem file permissions)
+		• Know how to properly use security groups
+		• Know the fundamental differences between private vs public vs elastic IP
+		• Know how to use User Data to customize your instance at boot time
+		• Know that you can build custom AMI to enhance your OS
+		• EC2 instances are billed by the second and can be easily created and thrown away, welcome to the cloud!
+		
+19.	
+	
