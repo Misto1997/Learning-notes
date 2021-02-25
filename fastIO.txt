@@ -99,6 +99,18 @@ class Main {
             } while (!isSpaceChar(c));
             return res.toString();
         }
+		
+		public String readSpaceString() {
+            int c = read();
+            while (isSpaceChar(c))
+                c = read();
+            StringBuilder res = new StringBuilder();
+            do {
+                res.appendCodePoint(c);
+                c = read();
+            } while (c != '\n');
+            return res.toString();
+        }
 
         public double readDouble() {
             int c = read();
