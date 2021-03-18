@@ -46,10 +46,10 @@
 			-in this all keys will get assigned to single server on rotation so we have replicas of server
 			 if one server is full we can put key to another replica of that servevr.
 		
-	5.	Optimistic and pessimistic locking
+	5.	Optimistic and pesimistic locking
 		-In optimistic locking you do not aquire lock before hand but when you are ready to commit transaction you check whether
 		 is there any transaction or not which are updating records.(flipkart flash sale)
-		-In pessimistic locking you aquire all locks before commiting any transaction.(redbus ticket booking)
+		-In pesimistic locking you aquire all locks before commiting any transaction.(redbus ticket booking)
 		
 	6.	Strong consistency vs eventual consistency
 		-strong consistency is used in rdbms where consistency is important

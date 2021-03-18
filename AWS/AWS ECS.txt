@@ -1,0 +1,141 @@
+1.	Docker Containers Management
+	• To manage containers, we need a container management platform
+	• Three choices:
+		• ECS: Amazon’s own platform
+		• Fargate: Amazon’s own Serverless platform
+		• EKS: Amazon’s managed Kubernetes (open source)
+		
+2.	ECS Clusters Overview
+	• ECS Clusters are logical grouping of EC2 instances
+	• EC2 instances run the ECS agent (Docker container)
+	• The ECS agents registers the instance to the ECS cluster
+	• The EC2 instances run a special AMI, made specifically for ECS
+	
+3.	ECS Task Definitions
+	• Tasks definitions are metadata in JSON form to tell ECS how to run a Docker Container
+	• It contains crucial information around:
+		• Image Name
+		• Port Binding for Container and Host
+		• Memory and CPU required
+		• Environment variables
+		• Networking information
+		• IAM Role
+		• Logging configuration (ex CloudWatch)
+		
+4.	ECS Service
+	• ECS Services help define how many tasks should run and how they should be run
+	• They ensure that the number of tasks desired is running across our fleet of EC2 instances.
+	• They can be linked to ELB / NLB / ALB if needed
+	
+5.	ECR(Elastic Container Registry)
+	• So far we’ve been using Docker images from Docker Hub (public)
+	• ECR is a private Docker image repository
+	• Access is controlled through IAM (permission errors => policy)
+	• AWS CLI v1 login command (may be asked at the exam)
+		• $(aws ecr get-login --no-include-email --region eu-west-1)
+	• AWS CLI v2 login command (newer, may also be asked at the exam - pipe)
+		• aws ecr get-login-password --region eu-west-1 | docker login --username AWS --
+		password-stdin 1234567890.dkr.ecr.eu-west-1.amazonaws.com
+	• Docker Push & Pull:
+		• docker push 1234567890.dkr.ecr.eu-west-1.amazonaws.com/demo:latest
+		• docker pull 1234567890.dkr.ecr.eu-west-1.amazonaws.com/demo:latest
+		
+6.	Fargate
+	• When launching an ECS Cluster, we have to create our EC2 instances
+	• If we need to scale, we need to add EC2 instances
+	• So we manage infrastructure…
+	• With Fargate, it’s all Serverless!
+	• We don’t provision EC2 instances
+	• We just create task definitions, and AWS will run our containers for us
+	• To scale, just increase the task number. Simple! No more EC2
+	
+7.	ECS IAM Roles Deep Dive
+	• EC2 Instance Profile:
+		• Used by the ECS agent
+		• Makes API calls to ECS service
+		• Send container logs to CloudWatch Logs
+		• Pull Docker image from ECR
+	• ECS Task Role:
+		• Allow each task to have a specific role
+		• Use different roles for the different ECS Services you run
+		• Task Role is defined in the task definition
+		
+8.	ECS Tasks Placement
+	• When a task of type EC2 is launched, ECS must determine where to place it, with the constraints of CPU, memory, and available port.
+	• Similarly, when a service scales in, ECS needs to determine which task to terminate.
+	• To assist with this, you can define a task placement strategy and task placement constraints
+	• Note: this is only for ECS with EC2, not for Fargate
+	
+9.	ECS Task Placement Process
+	• Task placement strategies are a best effort
+	• When Amazon ECS places tasks, it uses the following process to select container instances:
+		1. Identify the instances that satisfy the CPU, memory, and port requirements in the task definition.
+		2. Identify the instances that satisfy the task placement constraints.
+		3. Identify the instances that satisfy the task placement strategies.
+		4. Select the instances for task placement.
+		
+10.	ECS Task Placement Strategies
+	• Binpack
+		• Place tasks based on the least available amount of CPU or memory
+		• This minimizes the number of instances in use (cost savings)
+	• Random
+		• Place the task randomly
+	• Spread
+		• Place the task evenly based on the specified value
+		• Example: instanceId, attribute:ecs.availability-zone
+		
+11.	ECS – Service Auto Scaling
+	• CPU and RAM is tracked in CloudWatch at the ECS service level
+	• Target Tracking: target a specific average CloudWatch metric
+	• Step Scaling: scale based on CloudWatch alarms
+	• Scheduled Scaling: based on predictable changes
+	• ECS Service Scaling (task level) ≠ EC2 Auto Scaling (instance level)
+	• Fargate Auto Scaling is much easier to setup (because serverless)
+	
+12.	ECS – Cluster Capacity Provider
+	• A Capacity Provider is used in association with a cluster to determine the infrastructure that a task runs on
+		• For ECS and Fargate users, the FARGATE and FARGATE_SPOT capacity providers are added automatically
+		• For Amazon ECS on EC2, you need to associate the capacity provider with an auto-scaling group
+	• When you run a task or a service, you define a capacity provider strategy, to prioritize in which provider to run.
+	• This allows the capacity provider to automatically provision infrastructure for you
+	
+13.	• ECS is used to run Docker containers and has 3 flavors:
+		• ECS “Classic”: provision EC2 instances to run containers onto
+			• EC2 instances must be created
+			• We must configure the file /etc/ecs/ecs.config with the cluster name
+			• The EC2 instance must run an ECS agent
+			• EC2 instances can run multiple containers on the same type:
+				• You must not specify a host port (only container port)
+				• You should use an Application Load Balancer with the dynamic port mapping
+				• The EC2 instance security group must allow traffic from the ALB on all ports
+			• ECS tasks can have IAM Roles to execute actions against AWS
+			• Security groups operate at the instance level, not task level
+		• Fargate: ECS Serverless, no more EC2 to provision
+			• Fargate is Serverless (no EC2 to manage)
+			• AWS provisions containers for us and assigns them ENI
+			• Fargate containers are provisioned by the container spec (CPU / RAM)
+			• Fargate tasks can have IAM Roles to execute actions against AWS
+		• EKS: Managed Kubernetes by AWS
+		
+14.	ECR is used to store Docker Images
+	• ECR is tightly integrated with IAM
+	• AWS CLI v1 login command (may be asked at the exam)
+		• $(aws ecr get-login --no-include-email --region eu-west-1)
+		• “aws ecr get-login” generates a “docker login” command
+	• AWS CLI v2 login command (newer, may also be asked at the exam - pipe)
+		• aws ecr get-login-password --region eu-west-1 | docker login --username AWS --
+		password-stdin 1234567890.dkr.ecr.eu-west-1.amazonaws.com
+	• Docker Push & Pull:
+		• docker push 1234567890.dkr.ecr.eu-west-1.amazonaws.com/demo:latest
+		• docker pull 1234567890.dkr.ecr.eu-west-1.amazonaws.com/demo:latest
+	• In case an EC2 instance (or you) cannot pull a Docker image, check IAM
+	
+15.	ECS Other
+	• ECS does integrate with CloudWatch Logs:
+		• You need to setup logging at the task definition level
+		• Each container will have a different log stream
+		• The EC2 Instance Profile needs to have the correct IAM permissions
+	• Use IAM Task Roles for your tasks
+	• Task Placement Strategies: binpack, random, spread
+	• Service Auto Scaling with target tracking, step scaling, or scheduled
+	• Cluster Auto Scaling through Capacity Providers
