@@ -1,0 +1,237 @@
+1.	Cassandra is a Column store based Distributed(data is distributed evenly across multiple servers) NoSQL Database management system.
+	. Visualize it as Map like structure:
+		.eg Map<RowKey, SortedMap<ColName,ColValue>>
+		
+	. Since the Columns are stored in a sorted manner, we can perform a range scan on them.
+
+2.	It is designed to handle large amount of data, High availability with no single point of failure(No master server that handles read/write) as its decentralized.
+
+3.	Elements of Cassandra:
+	. Keyspace: Collection of one or more Column Family.(Logically Equivalent to database)
+
+	. Cluster: Cluster is a container for keyspaces/servers
+
+	. Column Family: Collection of one or more columns(Logically Equivalent to table):
+		. Every Column family has a primary key.
+
+		. Collections of column value pairs form a row
+
+		. Value of the primary key column is the row key.
+
+		. row key(Logically Equivalent to primary key) + column family =row
+
+		. we can have Keys_cached and row_cache, key cache holds the limited location of keys inmemory for faster lookup.
+
+		. row cache holds the entire rows data inmemory.
+
+		. preload_row_cache, it is flag to specify whether you want to pre-populate the row cache.
+
+	. Super Column Family: A type of Column Family which are likely to query together under same SCF.
+		. advantages : this optimized the read operation on the table.
+
+		. disadvantage : Cassandra doesnt index the columns in SCF.
+
+		. we cannot query individual column in SCF.
+
+
+	. CQL Table: Tables in Cassandra Query Language(CQL)
+
+4.	Key Features of Cassandra:
+	. Column-oriented : data stored in column fashion
+
+	. Decentralized Architecture : Evenly distributed data and has no SPOF(Single Point Of Failure).
+
+	. Elastically Scalable : Easy to add more servers to cluster.
+
+	. Tunable Consistency : by default its eventualy consistent DB but you can tune up this feature to make it strongly consistent.
+
+	. High availability : data is highly available.
+
+	. Replication and Fault-tolerant : data is being replicated in multiple nodes(servers) and hence its a highly fault tolerant DB.
+
+	. Has SQL like language CQL( Cassandra Query Language)
+
+	. Supports secondary indexes.
+
+5.	We have different types of NoSQL DB and some of the famous ones are MongoDB, HBase and Cassandra but lets say we want our DB to be Distributed, Column based and Decentralized then MongoDB and Hbase doesnt qualifies as MongoDB is Document based and not Column based DB whereas Hbase is not decentralized as it has Master serve and hence has Single point of failure.
+
+6.	nodes/servers are connected to each other in ring form and each ring is called as a data center and a cluster can have 1 or more such data center's.
+
+7.	on running casssandra, it opnes 3 ports on each node:
+	. 9160 : thrift based clients connect to cassandra using this port.
+
+	. 9042 : binary protocol based clients connect to cassandra using this port, eg: CQL
+
+	. 7000 : Nodes communicate with each other using this port
+
+8.	CQL(Cassandra Query Language):
+	.	CQL is a case insensitive language.
+
+	.	Cassandra doesnt store nulls if column values are not provided, if you see null in UI thats just for readability. It just simply stores only those columns which has values.
+
+9. cqlsh for CQL queries basics:
+	. to run cqlsh: bin/cqlsh 
+
+	. by default cqlsh runs on 9042 port and if you want to change port or host you set env. variable for both CQLSH_HOST for host and CSQLSH_PORT for port.
+
+	. to login: cqlsh -u cassandra -p cassandra
+		. -u(username) and -p(password)
+
+	. to create Keyspace: CREATE KEYSPACE <keyspace name> WITH <properties>
+		.eg: CREATE KEYSPACE "Student" WITH replication={'class':SimpleStrategy, 'replication_factor':3};
+
+	. to create column family: CREATE COLUMNFAMILY <name> (<variables> space <dataType>)
+		.eg: CREATE COLUMNFAMILY "Marksheet"(student_id varchar,
+		student_name varchar,
+		PRIMARY KEY(student_id>));
+
+	. to insert data : insert into <column family name>(column names) values(<values>);
+		.eg: insert into "Marksheet"(student_id) values(1);
+
+		. eg: insert into "Marksheet"(student_id) values(1) using TTL 100;
+			.row will be deleted after 100 sec.
+
+10.	Collection Data Type:
+		. Set: Set<datatype> will have non duplicates values.
+
+		. List: List<datatype> will have ordered values.
+
+		. Map: map<datatype,datatype> will have key value pair
+
+		. we cannot have nested collection type like List<Set<varchar>>
+
+		. we can set TTL for each value inside collection data type.
+		
+		.COUNTER Datatype is used for keeping count of events or something related. It's faster then having increamental integer type.
+			. can be used for dedicated columnfamily.
+			. cant be indexed.
+
+11.	Primary Key:
+	. Primary key not used to uniquely identity row, it also serves other purpose:
+		. it consist of partition key + clustering key.
+
+		. partition key is used to decide that how the data is distributed
+
+		. Clustering key decided how data is being stored in disk.
+	
+
+12.	 Partitioner is used to generate token for nodes and same partitioner is being used to partition data based on paritition key to assign data in one of the nodes.
+
+	. Partitioner's in Cassandra:
+		. RandomPartitioner: distribute data across cluster using MD5 Hash.
+
+		. Murmur3Partitioner: Distributes data uniformly across the cluster using MurmurHash.
+			. Better than RandomParitioner as its hashing and performance is faster.
+
+			. default parititioner used by cassandra
+
+
+13.	Partition Key Restrictions:
+	. All the columns of the parititon key should be restricted in the query. unless we use secondary index
+
+	. we cannot use > , >= , <= , < operator directly on the partition key. we need to use token for these operation
+
+	. Only IN and = operators are allowed on the partition key.
+
+	. ORDER BY is not supported with partition key.
+
+14.	As per CAP theorem Cassandra have AP as its a no sql DB.
+	. Cassandra gives feature to tune consistency level to some extent. 
+
+	.Write Operation : number of replica nodes on which the write must succeed before returning success to the client.
+		.Type of consistency levels:
+			. ONE : atleast one node needs to be successfully written data to make successful write.
+
+			. ALL : all given nodes need to write successfully to make successful write.
+
+			. QUORUM : minimum n nodes out of all given nodes needs to write successfully to make successful write.
+
+			. LOCAL_QUORUM : minimum n nodes out of all given nodes across each data center needs to write successfully to make successful write.
+
+		. Coordinator node keep data in a file called HINT file for those nodes which are down for some times. IT keeps data for given configured time, by default its 3 hours.
+
+			. If node comes back within given time, it persist that record to node else it got purged after given time and this mechanism called HINTED HAND OFF.
+
+
+	. Read Operation : number of replica nodes to check before returning data to client
+		. Type of consistency levels:
+			. ONE : Only one replica needs to be read to return success.
+
+			. ALL : All nodes should be read to return success.
+				. data should be read from all nodes only then it return data to client.
+
+				. latest columns based on timestamp will be merged.
+
+				. if any nodes fails return fails.
+
+
+			. QUORUM : minimum n nodes needs be read to return success.
+				.it will fetch the data from fastest node and only hash from rest n-1 nodes as transferring/reading huge can be expensive.
+
+				.then Coordinator node converts data received from fastest node into hash and compares it with rest hash received.
+
+				. if all hash's matches it return success/data to client.
+
+				.if any hash doesnt match due to stale data or maybe other reason it send 2nd request to nodes.
+
+				. and merges columns with latest timestamp(as mentioned earlier cassandra keeps timestamp for each column value) and returns data to client.
+
+				. and in the background it sends those latest column values to all nodes so that all nodes will have latest and synced data.
+
+				. this mechanism is called READ REPAIR.
+
+			. LOCAL_QUORUM : minimum n nodes from only one data center needs to be read to return success.
+
+		. Snitch is a program which runs on Cassandra and keeps track of a whole bunch of information about the cluster/meta info.
+			. It helps determining which nodes will gives fastest read response.
+
+			.It determines the data centers and racks each node resides in.
+
+			. It also monitors the network latency between the nodes and maintains this for each replica.
+
+
+15.	3 Component of Storage inside a Node:
+	. Memory:
+		. Temporary storage  and faster.
+
+		. data get lost if Nodes crashes or shut down.
+
+		. MemTables:
+			. Once data stored in Commit log, it gets stored in MemTable and then it return sucess to client.
+
+			. It stores data in key, value pair form like Map<row key, sortedMap<key,value>>
+
+		.Row cache:
+			. you can have all, none, n rows in each parition to be cached and that lives in Memory.
+			. It is a read through Cache, means when user queries certain data it will also get updated while reading from memory.
+
+		.Key Cache:
+			. Key, value pair is cached where key is primary key and value is the location offset in SSTable where the row is located.
+
+	. Disk:
+		. Permanent storage and slower.
+
+		. data stays there even nodes crashes
+
+		. Commit Log:
+			.Firstly data gets logged on Commit log file.
+
+			. it also used if nodes crashes.
+
+		. SSTable(Sorted String Table):
+			. Once success status returned to client, in background data gets replicated in SSTable.
+
+			. IT consist of index file, Summary file, Data file and bloom Filter.
+
+16.	TOMBSTONE:
+	. when user deletes data, its not directly deleted but marked to be deleted.
+		. if data gets deleted immidiatly and some raplica node is down, when it goes up again it will have data which gets deleted by user some times ago and its called ghost data.
+
+		. thats why deleted market is marked instead of directly deletion.  
+
+		. default value is 10 days for deletion gc_grace_seconds(deletion marker).
+
+17.	
+
+	
+			

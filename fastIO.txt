@@ -3,6 +3,18 @@ import java.util.*;
 
 class Main {
     private static class InputReader {
+
+
+        public static void main(String[] args) {
+            InputReader input = new InputReader(System.in);
+            OutputWriter out = new OutputWriter(System.out);
+            int t = input.readInt();
+            while (t-- > 0) { 
+                out.printLine();
+            }
+            out.close();
+        }
+        
         private InputStream stream;
         private byte[] buf = new byte[1024];
         private int curChar;
@@ -215,13 +227,4 @@ class Main {
         }
     }
 
-    public static void main(String[] args) {
-        InputReader input = new InputReader(System.in);
-        OutputWriter out = new OutputWriter(System.out);
-        int t = input.readInt();
-        while (t-- > 0) { 
-            out.printLine();
-        }
-        out.close();
-    }
 }
