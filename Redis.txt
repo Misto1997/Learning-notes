@@ -1,0 +1,231 @@
+1.	Redis is:
+	. In-Memory Database
+		. Pros:
+			 -RAM is faster than disk, makes Redis response very fast
+
+			 -Can respond millions of queries per second.
+
+			 -can handle requests from multiple clients in parallel
+
+		. Cons:
+			-Maximum size of the data is limited to the available RAM.
+
+			-Complete Data loss if Refis restarts(because of any failure)
+
+	.Fast
+
+	.open-source
+
+	.key-value data store
+
+	.Persistence(you can have data replicated on disk)
+
+	.High Availability
+	
+	.Distributed Cluser
+
+	.It is case sensitive
+
+
+2.	Data types in redis:
+	-generic queries:
+		. To Fetch all keys : keys *
+
+		. To fetch all keys size : dbsize
+
+		. to clear full db : flushall
+
+
+	-String:
+		. To insert : Set <key> <value>
+
+		. To Retrieve : Get <Key>
+
+		. To delete key : del <key>
+
+		. To increament int value : incr <key>
+
+		. To decrement int value : decr <key>
+
+		. To set multiple values : mset <key> <value> <key> <value>
+
+		. To get multiple values : mset <key> <key>
+
+		. To check if key exist : exists <key>
+
+		. To set TTL for key : set <key> <value> EX <seconds>.  (EX for seconds, PX in mili seconds, EXAT for timestamp)
+
+		. To set TTL for exisitng key : expire <key> <seconds>
+
+		. To persist again for which you have set TTL (remove TTL) : persist <key>
+
+	-Lists:
+		. to insert to left : lpush <key> <value> <value>
+
+		. to inser to right : rpush <key> <value> <value> <value>
+
+		. to fetch all values : lrange <key> 0 -1
+
+		. to fetch in certain range : lrange <key> <toIndex> <fromIndex>
+
+		. to fetch size of list : llen <key>
+
+		. to pop out from left : lpop <key> <number>
+
+		. to pop out from right : rpop <key> <number>
+
+		. to trim(to reduce to certain range) : ltrim <key> <toIndex> <fromIndex>
+
+	-Hashes:
+		. to insert : hset <key> <fields>. (here field is set of key value pairs)
+			ex: hset product car 1 bike 2
+
+		. to fetch : hget <key> <field Key>
+
+		. to fetch multiple fields of a key: hmget <key>
+
+	-Sets:
+		. to insert : sadd <key> <memeber> <member>
+
+		. to fetch size of set : scard <key>
+
+		. to fetch values : smembers <key>
+
+		. to check elements present in first key and not in second : sdiff <key1> <key2>
+
+		. to check member exists in key : sismember <key> <member>
+
+		. move member from one set to another : smove <sourceKey> <destinationKey> <member>
+
+		. to remove random member : spop <key> <number>
+
+		.to remove specific member : srem <key> <member> <member>
+
+
+3. Transaction in Redis :
+	- if you want to keep your system consistent and want to execute some set of queries together, transaction in redis provides that feature:
+		-type "multi" (to start transaction)
+
+		- type "exec" (to execute all queries in between)
+
+		-ex: 
+			. multi
+			. set product_id 1
+			. decr product_id
+			. get product_id
+			. exec
+
+		- if error occurs in between transaction will be aborted
+
+		- you can discard your transaction in between anytime
+			. type "discard"
+
+
+
+4.	Data Persistence:
+	. RDB(Redis Database File)
+		. It is the snapshot style persistence format.
+
+		. whole data gets persisted at perticular time.
+
+		. Advantages:
+		 . Compact, Single file of Redis Data
+		 . Perfect for backups
+		 . Performance is good
+		 . Allows faster restarts
+
+		. Disadvantages:
+		 . Chances of data loss
+		 . Fork Process, may impact write operations for few milliseconds.
+
+
+	. AOF(Append Only File)
+		. It is the change-log style peristence format.
+
+		. data gets saved on every write on redis.
+		
+		. Advantages:
+		 . High Durable.
+		 . Allows different fync policies.
+		 . Append only logs, no chance of corruption of file.
+		 . Corrupted file can be fixed by redis-check-aof tool.
+		 . AOF File can be parsed, lines can be removed.
+
+		. Disadvantages:
+		 . Size is bigger than RDB
+		 . Slower than RDB
+
+
+
+5.	Redis Replication:
+	. It follows master slave pattern.
+
+	. you can have one master and n number of slaves.
+
+	. you can read/write from master but only read from slave.
+
+	. whatever you write in master gets replicated to slave servers also.
+
+	. when master goes down, one of the slave became master.
+
+	. Redis acheive high availability by having sentinel nodes.
+		. you need to have minimum of 3 sentinel serves, that will elect a new master once master is down.
+
+		. you define down-after-milliseconds, the time sentinel servers wait for master to come back and if not they will elect a new slave server as master node.
+
+		. sentinel servers can be on same server where your redis servers are hosted(default port is 26379)
+
+		.  
+
+6. Use cases:
+	. 2 servers(redis, senitel) with quorem=2
+
+		. if master server goes down, single server cannot decide the next server.
+
+		. if redis node goes down but server is still alive then 2 senitel can decide the next master.
+
+	. 3 servers(redis, senitel) with quorem=2
+		
+		. if master goes down, senitel servers can decide next master.
+
+		. if master comes back, it will still act as master until it gets connected back with other servers to convert it as slave node. Till then user can still write to this server and when it gets connected to other servers(it will became slave), users data will get lost.
+
+		. you can set min-replicas-to-write=1 or any numbers, so that master will allow write only if min replica servers are available(it will help resolve above problem)
+
+		. but if in worst case 2 servers are down then master will stop accepting writes.
+
+	. 2 server(redis), 3 server(sentinel) with quorem=2
+
+		. good approach if he have limited resource for redis.
+
+		. network disconnect issue between application server(where senitel recide) and redis server can happen.
+
+	. 2 servers(redis, senitel), 2 servers(senitel) with quorem=3
+		. good approach if we have minimum 3 senitel servers(with redis and in different server)
+
+
+7. Redis Cluster:
+	. Related to Cassandra architecture of decentralized architecture.
+
+	. Multi master architecture
+
+	. Data is partitioned into 16k buckets and bucket size will be devided into number of server(master nodes).
+
+	. ex: 4 master nodes(4k buckets) for each master node will be alloted.
+
+	. when user writes something based on hashed generated master will be decided.
+
+	. PROS:
+		. Scalability
+
+		. can scale utpo 1000 nodes cluster
+
+		. performance is very good
+
+		. allow multiple masters.
+
+	CONS:
+	 	. needs altleast 1 slave node per master node for backup
+
+	 	. upgrading or downgrading to other topology is difficult.
+
