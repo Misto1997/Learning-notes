@@ -10,7 +10,7 @@
 		. Cons:
 			-Maximum size of the data is limited to the available RAM.
 
-			-Complete Data loss if Refis restarts(because of any failure)
+			-Complete Data loss if Redis restarts(because of any failure)
 
 	.Fast
 

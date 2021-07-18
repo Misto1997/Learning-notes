@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.*;
+import java.util.InputMismatchException;
 
 class Main {
     private static class InputReader {
@@ -9,12 +9,13 @@ class Main {
             InputReader input = new InputReader(System.in);
             OutputWriter out = new OutputWriter(System.out);
             int t = input.readInt();
-            while (t-- > 0) { 
-                out.printLine();
+            while (t-- > 0) {
+                int n=input.readInt();
+                out.printLine(n);
             }
             out.close();
         }
-        
+
         private InputStream stream;
         private byte[] buf = new byte[1024];
         private int curChar;
@@ -22,30 +23,30 @@ class Main {
         private SpaceCharFilter filter;
 
         public int[] readIntArray(int n) {
-            int a[] = new int[n];
+            int[] a = new int[n];
             for (int i = 0; i < n; i++) {
                 a[i] = readInt();
             }
             return a;
         }
-		
-		public String[] readStringArray(int n) {
-            String a[] = new String[n];
+
+        public String[] readStringArray(int n) {
+            String[] a = new String[n];
             for (int i = 0; i < n; i++) {
                 a[i] = readString();
             }
             return a;
         }
-		
-		public char[] readCharArray(int n) {
-			char a[] = new char[n];
-			for (int i = 0; i < n; i++)
-				a[i] = readString().charAt(0);
-			return a;
-		}
+
+        public char[] readCharArray(int n) {
+            char[] a = new char[n];
+            for (int i = 0; i < n; i++)
+                a[i] = readString().charAt(0);
+            return a;
+        }
 
         public double[] readDoubleArray(int n) {
-            double a[] = new double[n];
+            double[] a = new double[n];
             for (int i = 0; i < n; i++) {
                 a[i] = readDouble();
             }
@@ -53,7 +54,7 @@ class Main {
         }
 
         public long[] readLongArray(int n) {
-            long a[] = new long[n];
+            long[] a = new long[n];
             for (int i = 0; i < n; i++) {
                 a[i] = readLong();
             }
@@ -111,8 +112,8 @@ class Main {
             } while (!isSpaceChar(c));
             return res.toString();
         }
-		
-		public String readSpaceString() {
+
+        public String readSpaceString() {
             int c = read();
             while (isSpaceChar(c))
                 c = read();
@@ -190,7 +191,7 @@ class Main {
         }
 
         public interface SpaceCharFilter {
-            public boolean isSpaceChar(int ch);
+            boolean isSpaceChar(int ch);
         }
     }
 
@@ -199,10 +200,6 @@ class Main {
 
         public OutputWriter(OutputStream outputStream) {
             writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(outputStream)));
-        }
-
-        public OutputWriter(Writer writer) {
-            this.writer = new PrintWriter(writer);
         }
 
         public void print(Object... objects) {

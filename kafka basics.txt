@@ -36,5 +36,8 @@
 	
 8. kafka uses files system to store messages.
 
-9.	
+9. If we have number of partition's of a topic and no key is given then by default data is written to partitions in round robin manner but if you provide Key then hash is being calculated and data is being written to partition based on Hash.
+	- having Key ensures that data with same key will go to same partition always and that ensures ordering.
+
+10. 
 	

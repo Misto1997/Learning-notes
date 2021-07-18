@@ -1,0 +1,54 @@
+1.	To check current path:
+	-	pwd
+
+2.	connect to remote PC(ex. ec2 instance) via ssh
+	-	ssh -i <private key> <username>@<ip>
+
+3.	switch to another directory
+	-	cd <path>
+
+4. go back to previous directory
+	-	cd ..
+
+5. list of files in current directory
+	-	ls
+	-	ls -a (to list all files)
+
+6.	copy files from current directory to destination
+	-	cp /<current path> /<destination path>
+
+7.	move files from current directory to destination
+	-	mv /<current path> /<destination path>
+
+8.	delete files in directory
+	-	rm /<path>
+
+9.	delete a directory
+	-	rm -rf
+
+10.	edit current file in path
+	-	nano /<path>
+	-	vi <filename>
+	-	sudo vi <filename>
+	-	:q! to terminate and :wq to save`
+
+11.	to go to root directory
+	-	/
+
+12.	to open a file
+	- cat <filename>
+
+13.	to check all env.
+	-env
+
+14.	to get your IP
+	-ipconfig getifaddr en0
+
+15. compress directory
+	-tar -czvf name-of-archive.tar.gz /path/to/directory-or-file
+
+16. download file from Ec2 to local machine
+	-scp -r -i <path to private key> username@ip:/path/to/file /path/to/download/file
+
+17. upload file from local machine to Ec2
+	-sudo scp -r -i <path to private key>  /path/to/file username@ip:/path/to/upload/file
