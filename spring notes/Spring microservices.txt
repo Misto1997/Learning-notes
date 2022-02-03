@@ -54,7 +54,7 @@
 							 To avoid messing with the database, use the tooling you built alongside your app to go and check the database.
 							 
 7.	point to remember :- we should not return list in api call because in future if requirement changes and some other service requires object on call		
-	you need to change it and your code breakes for those who are consuming api for List. Its better to use Object Wrapper and List as a part of that wrapper
+	you need to change it and your code breaks for those who are consuming api for List. Its better to use Object Wrapper and List as a part of that wrapper
 	so that it will be backword compatible in future.
 	
 8.	RestTemplates are thread safe and hence one call cannot affect another call.

@@ -178,15 +178,15 @@
 		.  
 
 6. Use cases:
-	. 2 servers(redis, senitel) with quorem=2
+	. 2 servers(redis, sentinel) with quorem=2
 
 		. if master server goes down, single server cannot decide the next server.
 
-		. if redis node goes down but server is still alive then 2 senitel can decide the next master.
+		. if redis node goes down but server is still alive then 2 sentinel can decide the next master.
 
-	. 3 servers(redis, senitel) with quorem=2
+	. 3 servers(redis, sentinel) with quorem=2
 		
-		. if master goes down, senitel servers can decide next master.
+		. if master goes down, sentinel servers can decide next master.
 
 		. if master comes back, it will still act as master until it gets connected back with other servers to convert it as slave node. Till then user can still write to this server and when it gets connected to other servers(it will became slave), users data will get lost.
 
@@ -198,10 +198,10 @@
 
 		. good approach if he have limited resource for redis.
 
-		. network disconnect issue between application server(where senitel recide) and redis server can happen.
+		. network disconnect issue between application server(where sentinel recide) and redis server can happen.
 
-	. 2 servers(redis, senitel), 2 servers(senitel) with quorem=3
-		. good approach if we have minimum 3 senitel servers(with redis and in different server)
+	. 2 servers(redis, sentinel), 2 servers(sentinel) with quorem=3
+		. good approach if we have minimum 3 sentinel servers(with redis and in different server)
 
 
 7. Redis Cluster:

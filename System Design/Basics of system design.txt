@@ -55,14 +55,14 @@
 		-strong consistency is used in rdbms where consistency is important
 		-eventual consistency is used in nosql where availability is important.
 		
-	7.	rdbms vs nosql
+	7.	sql vs nosql
 		-based on situation you need judge which one is better.
 		
 	8.	caching for commonly used data
 		-two types 
 			-node based where all nodes maintain its own cache
 			-distributed where all nodes share same cache.
-		-cache cannot be source of true data as it may not have latest data
+		-cache cannot be source of truth data as it may not have latest data
 		-data needs to be small or less as its in main memory.
 		-some eviction policy
 	

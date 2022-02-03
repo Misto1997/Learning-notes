@@ -1,0 +1,22 @@
+1.	Jenkins is a Java Application used for CI(Continuos Integration)/CD(Continues Delivery).
+
+2.	It works well with shared repository like Github, bit bucket etc. 
+		-	as soon as someone pushes the code to repository Jenkins triggers a build and notify the status of build.
+		-	One can enable various steps post build like run unit tests or code quality checks and sends report back.
+
+3.	by default Jenkins come with its own standalone servlet container i.e (Jetty/Winstone) but you can configure it with any servlet container like Tomcat, JBoss etc.
+
+4. By default Jenkins stores details like logs,plugins,all configs, job details under .jenkins folder but you can change it.
+
+5.	You can use Role based Authorization Strategy plugin to assign Roles to different users.
+
+6.	you add git plugin and add repo url to jenkins with build commands to run your project with different run strategy.
+
+7.	you can use CatLight software along with Jenkins to get all job related notification on your desktop.
+
+8.	Jenkins helps in full CI/CD Pipeline(group of events/jobs chained together in sequence) setup. i.e Build -> Deploy -> Test -> Release.
+	-	example: once code is pushed to GIT "build" job is triggered and once its successfull jar/ear/var file gets deployed via "deploy " jobs trigger to test env. and tests are been done using "test" jobs and once everything is fine "release" jobs are been triggered.
+
+9.	JenkinsFile is a pipeline as a code where we write scripts to setup jenkins pipelines.
+
+10.	
