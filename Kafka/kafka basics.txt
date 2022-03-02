@@ -1,0 +1,43 @@
+1.	Apache Kafka is a distributed streaming platform.
+	-Publish and subscribe to streams of records, similar to a message queue or enterprise messaging system.
+	-Store streams of records in a fault-tolerant durable way.
+	-Process streams of records as they occur.
+
+2.	kafka has 4 core concepts:-
+	-The Producer API allows an application to publish a stream of records to one or more Kafka topics.
+	-The Consumer API allows an application to subscribe to one or more topics and process the stream of records produced to them.
+	-The Streams API allows an application to act as a stream processor, 
+	 consuming an input stream from one or more topics and producing an output stream to one or more output topics, 
+	 effectively transforming the input streams to output streams.
+	-The Connector API allows building and running reusable producers or consumers 
+	 that connect Kafka topics to existing applications or data systems. For example, 
+	 a connector to a relational database might capture every change to a table.
+	 
+3.	lets say producer sends data and consumer consumes data but in between kafka cluster recides in which there are brokers,
+	-it distributes the load and provide multiple backup for your data.
+	-each broker have one or more kafka topics, topic is like a category/feed of changes in data(eg. sales order,customer info).
+	-these topics can be partitioned to multiple broker which allow data to be resilience so if one broker goes down
+	 topics can be read from another broker.
+
+4.	the way data is copied is like when data is been writen there are multiple simultaneously writes on all partitions
+	in order to make multiple replicas.
+	
+5.	broker is nothing but a logical seperation of partition of topics like a container.
+
+6.	producer publishes the data to kafka cluster.
+	-message durabilility :- you can config.that you want all data to be replicated before response back or immidiatly reply.
+	-ordering/retries :- you can config. how many retries you want for that data before someone else does changes.
+	-you can config. the batch and compression of a message to increase throughput.
+	-you can set the queuing limit.
+	
+7.	Consumer's are organized into consumer groups and they can read data from kafka cluster.
+	-consumers have partition's in each group and if one or more consumer went out it needs to be rebalanced
+	-and it is done by zookeeper
+	
+8. kafka uses files system to store messages.
+
+9. If we have number of partition's of a topic and no key is given then by default data is written to partitions in round robin manner but if you provide Key then hash is being calculated and data is being written to partition based on Hash.
+	- having Key ensures that data with same key will go to same partition always and that ensures ordering.
+
+10. 
+	

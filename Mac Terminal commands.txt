@@ -75,3 +75,6 @@
 
 24. get file size in KB
 	-ls -sh <filename>
+
+25. to check system memory usage
+	-watch -n 5 free -m
