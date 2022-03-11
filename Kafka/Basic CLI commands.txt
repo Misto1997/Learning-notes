@@ -1,0 +1,22 @@
+1.	Start Zookeeper:
+	- zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties
+
+2.	Start Kafka:
+	- kafka-server-start /usr/local/etc/kafka/server.properties
+
+3.	Create Kafka Topic:
+	- kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+4.	Initialize Producer console:
+	- kafka-console-producer --broker-list localhost:9092 --topic test
+
+5.	Initialize Consumer console:
+	- kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
+
+6.	List down Consumer groups:
+	- kafka-consumer-groups --bootstrap-server localhost:9092 --list
+
+7.	Descript a Consumer group:
+	- kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group <group-name>
+
+8.	

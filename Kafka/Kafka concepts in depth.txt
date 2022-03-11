@@ -1,0 +1,151 @@
+1.	Topic:
+		- It is a perticular stream of data
+		- Similar to table in DB without any constraint.
+		- A topic is identified by its name.
+		- Each topic can be split into multiple partition.
+			- Each partition is ordered.
+			- Each message inside parition gets incremental ID called offset.
+				- ex. 0,1,2,3,4
+			-All partitions inside topic are independent of each other and have separate offset count.
+			- data is ordered within partition but order is not gauranteed between different partitions.
+		- Data in kafka recides only for limited time(default 1 week).
+		- Once the data is written to partition, it cannot changed i.e data is immutable.
+		- Data is assigned to partition randomly(round robin) but can be unified to perticular partition.
+
+2.	Broker:
+		- Broker is nothing but a server and multiple broker forms Kafka Cluster like multi instance env.
+		- Each broker is identified by ID(integer).
+		- If you are connected to one broker then you are automatically connected to all broker's inside that kafka cluster.
+		- If you have multiple partition of a topic say 3 partition it will get distributed to all broker's randomly. ex. 2 brokers and 3 partitions then 2 partition will get assign to first broker and 1 partition to second one.
+		
+3.  Topic replication:
+		- You can decide the replication factor ideally greater than 1 to have data available in case one or more broker's goes down.
+		- Only one broker can be a leader at a time for a partition and only that broker will receive or serve data for a partition and other broker will just be in sync with the leader broker.
+		- Replication-factor vs min.insync.replicas:
+			-replication factor is the total umber of copies of a parition while min.insync.replicas defines the minimum number of copies required to allow kafka keep on working.
+				ex: 3 node cluster and a topic with replicator-factor of 3. If one of the brokers is down there are only two copies left “in sync”. So the system will keep running if min.insync.replicas is 2 but it will stop accepting new messages if min.insync.replicas is 3.
+
+4.	Producers:
+		- Producer writes data to topic.
+		- Producer automatially know to which broker and to which partition to write data.
+		- In case of broker failure, Producers will automatically recover.
+		- You can set acknowledgement level of data writes to broker.
+			- acks=0: producer wont wait for acknowledgement from broker(can cause data lose).
+			- acks=1: producer will wait for the leader to acknowledge the data(limited data lose possible)
+			- acks=all: producer will wait for the ackowledgement from leader and replicas(min.insync.replicas)(no data lose).
+		- If you send Key along with data then all the data for that Key will get maps to same partition always.
+
+5.	Consumers:
+		- Consumer is identified by name and reads data from topic.
+		- Consumers know which broker to read from.
+		- In case of broker failure, Consumer will automatically recover.
+		- Data is being read in order within each partition.
+		- If no. of partitions = no. of consumers then each consumer will read data from each partition, if no. of partitions < no. of consumers then some of consumer will remain ideal and if no. of partitions > no. of consumers then some consumer will read from more than 1 partition.
+		- If you want to read same data from multiple places then create consumer groups with group.id.
+
+6.  Consumer Offsets:
+		- Kafka stores the offset at which the consumer group has been reading.
+		- Offsets are commited live in kafka topic "__consumer_offsets".
+		- When the consumer in a group reads data from topic it commits the offset to this topic.
+		- It helps in recovering data read capability of consumer from where it left when it dies and came back live.
+		-When a consumer joins a consumer group it will fetch the last committed offset so it will restart to read from where it left when it crashes. The earliest and latest values for the "auto.offset.reset" property is used when a consumer starts but there is no committed offset for the assigned partition. In this case you can chose if you want to re-read all the messages from the beginning (earliest) or just after the last one (latest).
+		- Delivery Semantics for Consumer:
+			- at most once (Not preffered as data might lost):
+				- offset is committed as soon as data is received.
+
+			- atleast once(default and preffered):
+				- offset is committed only after data is processed.
+				- can lead to duplicate read
+
+			- exactly once:
+				- can be achieved within kafka ecosystem only using kafka streams API.
+				- for external systems, use idempotent consumer.
+
+7.	Kafka Broker Discovery:
+		- Every Kafka broker is called bootstrap server.
+		- If you are connected to one broker it will know about all other brokers, topics and partition with the help of Metadata request.
+		
+8.	Zookeeper:
+		- It manages brokers in a cluster, it keeps a list of all brokers available.
+		- It helps in leader election between partitions.
+		- It also communicates with kafka in case of any change like broker dies, new topic added etc.
+		- In short Kafka cannot work without Zookeeper.
+		- Zookeeper by design only works with odd number of servers(ex. 3,5,7).
+		- it follows master-slave architecture where master handles writes and replicas handle reads.
+		- Your Kafka cluster connects to Zookeeper cluster to maintain its metadata and related data internally with Zookeeper.
+
+9.	Idempotent Producer:
+		- Problem: Producer sends data to kafka -> Kafka commits the msg -> kafka send ack to producer but it never reaches to producer due to network error -> producer will retry and duplication occurs on kafka.
+
+		- Solution: after 0.11 producer's has "produce ID" attached to data and hence even if it fails and on retry kafka detects that i have already committed the data before via "produce ID" it simple just send back ack and does not commit data again.
+
+		- Default properties after kafka 0.11(Idempotent Producer):
+			- retries= Integer.MAX_VALUE
+			- max.in.flight.request=5(for parallel request processing with ordering in place)
+			- acks=all
+
+		-To set your producer as Idempotent producer:
+			- producerProps.put("enable.idempotence",true);
+
+10.	Safe producer configs:
+		- < kafka 0.11:
+			- acks=all(producer level)
+				- ensures data is replicated before giving back acknowledgement
+
+			- min.insync.replica=2(broker/producer level)
+				- ensure atleast 2 brokers in ISR have data replicated before an ack. 
+
+			- retries=Integer.MAX_VALUE(prodcuer level)
+				- Ensure transiet errors are retried indefinitely.
+
+			- max.in.flight.request.per.connection=1(producer level)
+				- Ensure only 1 request tried at a time, prevent data ordering in case of retries.
+
+		- >= kafka 0.11:
+			- enable.idempotence=true(producer level)
+				- to enable Idempotant Producer
+
+			- min.insync.replica=2(broker/producer level)
+
+			- acks=all(producer level)
+
+			- retries=Integer.MAX_VALUE(prodcuer level)
+
+			- max.in.flight.request.per.connection=5(producer level)
+				-Idempotent producer keeps ordering even while processing parallel requests
+
+11.	Message Compression:
+		- Producer can use compression technique to compress large data or while push data into batches.
+		- format supported: gzip/snappy/Iz4
+
+		- Advantanges:
+			- Much smaller producer request size(upto 4x smaller).
+			- Faster data transfer over network i.e hence low latency.
+			- Better throughput
+			- better disk utilization in kafka
+
+		- Disadvantages:
+			- Producer uses some CPU cycles to compress data.
+			- Consumer uses some CPU cycles to decompress data.
+
+		- compression.type.config=snappy
+
+
+12.	Producer Batching configs:
+		- Linger.ms
+			- Number of ms a producer is willing to wait before sending a batch out.
+			- Default is 0
+			- If you dont want near realtime data transfer then you can have it to 5 or some higher number so that to give time producer to batch data.
+			- So trade off is 5 ms delay vs better throughput, compression and efficiency.
+			- But if batch is full before linger timeout it will push data right away automatically.
+
+		- batch.size
+			- Maximum number of bytes that will be included in a batch.
+			- Default is 16KB
+			- You can increase to 32 or 64KB to increase batch size hence better compression.
+			- Batch size is allocated per partition.
+
+
+13.	
+
+			
