@@ -1,0 +1,142 @@
+Steps:
+
+1. install Confluent Platform on AWS.
+
+2. configure properties files accordingly.
+
+3. install confluent jdbc sink connector inside confluent platform and start confluent.
+
+4. create JDBC sink connector with API.
+
+5. create stream  with base kafka topic i.e platform-conversation-event-tracker, to add schema to json payload.
+
+6. create table specific streams with topics to filter data.
+   filter data based on 2 condition
+    -currentState = "social-sending-to-pipeline"
+    -currentState = "social-received-message-from-pipeline"
+
+7. create DB and Tables on RDS.
+
+8. done.
+
+
+
+##################
+
+---jdbc sink connector----
+
+{
+    "name": "jdbc-sink-connector-data_pipeline_db_v1",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "connection.url" : "jdbc:mysql://<host-url>/<db-name>",
+        "connection.user" : "root",
+        "connection.password" : "password",
+        "topics": "conversation_logs, response_logs",
+        "tasks.max": 2,
+        "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+        "key.converter.schema.registry.url": "http://localhost:8081",
+        "value.converter": "io.confluent.connect.avro.AvroConverter",
+        "value.converter.schema.registry.url": "http://localhost:8081",
+        "auto.create": true,
+        "auto.evolve":true,
+        "errors.tolerance":"all",
+        "errors.deadletterqueue.topic.name":"conversation_corrupt_messages_dlq",
+        "errors.deadletterqueue.topic.replication.factor": 1
+    }
+}
+
+
+
+----Streams for transformation-------
+
+CREATE STREAM conversation_schema_builder (request_id VARCHAR, bot_id VARCHAR, bot_ref_id VARCHAR, conversation_id VARCHAR, current_state VARCHAR, request_status VARCHAR, timestamp VARCHAR, env VARCHAR, request_json VARCHAR) WITH (KAFKA_TOPIC='platform-conversation-event-tracker', VALUE_FORMAT='JSON');
+
+
+CREATE STREAM conversation_request_avro_generator WITH (VALUE_FORMAT='AVRO', KAFKA_TOPIC='conversation_logs') AS SELECT * FROM conversation_schema_builder where current_state='social-sending-to-pipeline';
+
+CREATE STREAM conversation_response_avro_generator WITH (VALUE_FORMAT='AVRO', KAFKA_TOPIC='response_logs') AS SELECT * FROM conversation_schema_builder where current_state='social-received-message-from-pipeline';
+
+
+
+----DB and Table creation on RDS-----
+
+CREATE DATABASE data_pipeline_db;
+
+
+CREATE TABLE data_pipeline_db.conversation_logs (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  request_id varchar(100) DEFAULT NULL,
+  bot_id TEXT DEFAULT NULL,
+  conversation_id TEXT DEFAULT NULL,
+  request_status TEXT DEFAULT NULL,
+  timestamp TEXT DEFAULT NULL,
+  bot_ref_id TEXT DEFAULT NULL,
+  current_state TEXT DEFAULT NULL,
+  request_json json DEFAULT NULL,
+  env TEXT DEFAULT NULL,
+  created_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3),
+  KEY id_idx (id)
+);
+
+
+
+CREATE TABLE data_pipeline_db.response_logs (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  request_id varchar(100) DEFAULT NULL,
+  bot_id TEXT DEFAULT NULL,
+  conversation_id TEXT DEFAULT NULL,
+  request_status TEXT DEFAULT NULL,
+  timestamp TEXT DEFAULT NULL,
+  bot_ref_id TEXT DEFAULT NULL,
+  current_state TEXT DEFAULT NULL,
+  request_json json DEFAULT NULL,
+  env TEXT DEFAULT NULL,
+  created_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3),
+  KEY id_idx (id)
+);
+
+-----Deployment commands distributed-----------
+----5.5.3 
+
+nohup /usr/local/confluent-5.5.3/bin/connect-distributed /usr/local/confluent-5.5.3/etc/schema-registry/connect-avro-distributed.properties /usr/local/confluent-5.5.3/etc/kafka-connect-jdbc/sink-quickstart-sqlite.properties &
+
+
+----6.1.1
+nohup /usr/local/confluent-6.1.1/bin/connect-distributed /usr/local/confluent-6.1.1/etc/schema-registry/connect-avro-distributed.properties /usr/local/confluent-6.1.1/share/confluent-hub-components/confluentinc-kafka-connect-jdbc/etc/sink-quickstart-sqlite.properties &
+
+
+
+-----Deployment commands-----------
+---5.5.3
+nohup /usr/local/confluent-5.5.3/bin/connect-standalone /usr/local/confluent-5.5.3/etc/schema-registry/connect-avro-standalone.properties /usr/local/confluent-5.5.3/etc/kafka-connect-jdbc/sink-quickstart-sqlite.properties &
+
+
+nohup /usr/local/confluent-5.5.3/bin/schema-registry-start /usr/local/confluent-5.5.3/etc/schema-registry/schema-registry.properties &
+
+nohup /usr/local/confluent-5.5.3/bin/ksql-server-start /usr/local/confluent-5.5.3/etc/ksqldb/ksql-server.properties &
+
+nohup /usr/local/confluent-5.5.3/bin/kafka-rest-start /usr/local/confluent-5.5.3/etc/kafka-rest/kafka-rest.properties &
+
+
+----6.1.1
+nohup /usr/local/confluent-6.1.1/bin/schema-registry-start /usr/local/confluent-6.1.1/etc/schema-registry/schema-registry.properties &
+
+nohup /usr/local/confluent-6.1.1/bin/ksql-server-start /usr/local/confluent-6.1.1/etc/ksqldb/ksql-server.properties &
+
+
+
+---setup---
+connect- keep groud-id and bootstrap same
+ksql-db- keep ksql-service-id same
+schema- keep bootstrap server same
+
+
+--restart service---
+ put below statement inside etc/crontab:
+ */5 * * * * root /usr/local/confluent-6.1.1/connector_restart_job.sh 2>&1 >> /usr/local/confluent-6.1.1/connector_restart_job.log
+
+
+ 
+
+##################
