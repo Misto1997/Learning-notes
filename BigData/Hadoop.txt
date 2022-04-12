@@ -1,0 +1,132 @@
+1.	Hadoop is an open source software platform for distributed storage and distributed processing of very large data sets on computer clusters build from comodity hardware.
+
+2.	Why Hadoop needed?
+		- Data size is too big and vertical scaling cannot solve the problem.
+		- A single processing unit cannot process this large amount of data in acceptable time.
+		- Single point of failure.
+
+3.	EcoSystem of Hadoop:
+		1.	Query Engine: (HIVE can be one but It fits tightly with Hadoop EcoSystem)
+			- Apache DRILL:
+				- allow you to write SQL queries and can talks NoSQL DB like HBASE, Cassandra or MongoDB.	
+
+			- HUE:
+				- you can write interactive queries works with HIVE and HBASE.
+
+			- Apache PHOENIX:
+				- similar to Apache DRILL.
+				- but it gives ACID properties.
+
+			- presto and Apache Zeppelin:
+
+
+		2.	Core Hadoop EcoSystem: HDFS, YARN and MapReduce comes with Hadoop and rest are built top of it over the time.
+			- HDFS(Hadoop Distributed File System):
+				- Data get's splits into smaller chunks of data and distributed across cluter(more than 1 server) with multiple replication factor to make it fault tolerance.
+
+			- YARN(Yet Another Resource Negotiator):
+				- it is a system that manages the resource on cluster and decides what tasks to run when etc.
+
+			- MapReduce: It is built on top of YARN only i.e using Yarn MapReduce does it works.
+				- Mapper: It Transforms the data across cluster in parallel in very efficient manner.
+				- Reducer: Aggregate the data transformed by mapper.
+				-Both are programming module's and logic has to be built in Java for the same.
+
+			- Pig: It is built on top of MapReduce, Pig converts and uses MapReduce job to get result.
+				- Similar functionality to MapReduce but instead of Java code written in MapReduce, you can use scripting laguage alike SQL for the same.
+			
+			- Hive: It is built on top of MapReduce or can be over TEZ, Hive converts and uses MapReduce job to get result.
+				- It takes SQL queries and fetches result like you are querying on SQL DB.
+
+			- Apachi Ambari:
+				- It is UI visualization tools which gives view about your cluster in details and execute queries from UI itself.
+
+			- MESOS:
+				- It is alternative to YARN.
+
+			- Spark:
+				- It can work with either YARN or MESOS.
+				- Alternative to MapReduce with some pros and cons.
+				- Basically for Batch processing MapReduce is preffered and for real time processing Spark is preffered.
+				- Implementation can be in Java, Python or Scala.
+				- use cases: handle sql queries on large data, ML processing across cluster, streaming data in realtime.
+
+			- TEZ:
+				- Similar to Spark and MapReduce.
+				- 
+
+			- Apache HBASE:
+				- NoSQL Database.
+				- A columnar data store.
+
+			- Apache STORM:
+				- It process streaming data in real time and alternative to spark streaming.
+				
+			- Oozie:
+				- Helps to schedule job on cluster.
+				- If you have different taks to be performed then Oozie helps in schedule together this task in one job.
+
+			- Zookeeper:
+				- works the same way it works for Kafka cluster, to keep track of nodes which are alive which are dead etc.
+
+			- Data Ingestion: how data will get into HDFS from external sources.
+				-Sqoop:
+					- act as connector between ODBC or JDBC DB to HDFC.
+				-Flume:
+					- transporting web logs to HDFS.
+				-Kafka:
+					- A general purpose distributed messaging platform that takes data from anywhere.
+
+		3.External Storage: there are external storage/DB which might get integrated with Hadopp cluster(HBASE can be one but It fits tightly with Hadoop EcoSystem).
+			-MySQL, Cassandra, MongoDB.
+
+4.	HDFS:
+	- A big file is broken down into small blocks, by default its 128 mb but you can configure it.
+
+	- these blocks gets stored into multiple server's inside cluster so that when needed can be processed in parallel within server itself instead of taking all blocks into one server and then process it.
+
+	- Data is fault tolerant as data copy is being distributed across cluster, ex. replication factor = 2.
+
+	- It follows Master Slave architecture where Master i.e Name Node knows where data recides as it has meta data of all blocks and Data nodes and actual data is in Data node's.
+
+	- Example:
+		- Reading a file:
+			-"Application(Client Node)"" asks "Name Node" to access xyz file and "Name node" return's address to "Data nodes" which will have xyz file and then "Client Node" will intract with Data Node.
+
+		- Writing a file:
+
+			- "Client Node" wants to create a new file, it will tell "Name Node" that i want to create a new file. "Name node" will create a entry of meta data and tell "Client node" to create the new file. "Client node" will intract with any one "Data node" that he wants to create file and internally "Data node" will coordinate with other "Data node" to distribute blocks and replicate blocks across cluster and sends back ack to "Client Node" and then to "Name node" and "Name node" will record all required data.
+
+	- How "Name node" will be fault tolerant?
+		- Back up Meta data:
+			- Name node writes to local disk or NFS.
+			- manual process, down time and not reliable.
+
+		- Secondary Name node:
+			- Maintains merged copy of edit log so that you can restore.
+
+		- HDFS Federation:
+			- Each Name node manges a specific namespace volume(sub directories).
+			- if one Name node is down, rest will be still working.
+
+		- HDFS High Availability(Preffered):
+			- Hot Standby Name node using shared storage edit log.
+			- Zookeeper tracks active name node.
+			- Uses extreme measures to ensure only one Name node is used at a time.
+			- IF active name node goes down, another name node takes over.
+			- Complex to configure.
+
+	- 
+
+5.	MapReduce:
+	- Distributes the processing of data on your cluster.
+
+	- Divides your data up into partitions that are Mapped(transformed) i.e it exracts required data from input and Reduced(aggregated) i.e process the data into required result for analysis by mapper and reducer functions yur define.
+
+	- Resilient to failure - an application master monitors your mappers and reducers on each partition.
+
+	- example: movie ratings data is given to you and you want to get how many movies does a user rated so far?
+		- Data goes into HDFS first -> Mapper will transform raw data i.e transforms data into key,value pair (userid, movie rated) -> shuffle and sort happens automatically in background to map all values to unique key -> Reducer will aggregated such all key/value pairs and sums up the number of movies a user rated.
+
+	- 
+
