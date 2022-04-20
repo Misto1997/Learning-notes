@@ -119,14 +119,26 @@
 	- 
 
 5.	MapReduce:
-	- Distributes the processing of data on your cluster.
+		- Distributes the processing of data on your cluster.
 
-	- Divides your data up into partitions that are Mapped(transformed) i.e it exracts required data from input and Reduced(aggregated) i.e process the data into required result for analysis by mapper and reducer functions yur define.
+		- Divides your data up into partitions that are Mapped(transformed) i.e it exracts required data from input and Reduced(aggregated) i.e process the data into required result for analysis by mapper and reducer functions yur define.
 
-	- Resilient to failure - an application master monitors your mappers and reducers on each partition.
+		- Resilient to failure - an application master monitors your mappers and reducers on each partition.
 
-	- example: movie ratings data is given to you and you want to get how many movies does a user rated so far?
-		- Data goes into HDFS first -> Mapper will transform raw data i.e transforms data into key,value pair (userid, movie rated) -> shuffle and sort happens automatically in background to map all values to unique key -> Reducer will aggregated such all key/value pairs and sums up the number of movies a user rated.
+		- example: movie ratings data is given to you and you want to get how many movies does a user rated so far?
+			- Data goes into HDFS first -> Mapper will transform raw data i.e transforms data into key,value pair (userid, movie rated) -> shuffle and sort happens automatically in background to map all values to unique key -> Reducer will aggregated such all key/value pairs and sums up the number of movies a user rated.
 
-	- 
+		- Failure Handling:
+			- what if any Mapper or Reducer tasks fails?
+				- Application master monitor such issues and restarts the task.
 
+			- what if Application master  or whole node/server itself goes down?
+				-YARN Resource manager can restart it as its being spawned by YARN resource manager only.
+
+			- what if YARN resource manager goes down?
+				- High availability can be acheived with Zookeeper to have a hot standby.
+
+		- 
+
+6. Spark: 
+		- 

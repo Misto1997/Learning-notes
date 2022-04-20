@@ -78,3 +78,7 @@
 
 25. to check system memory usage
 	-watch -n 5 free -m
+
+26. Setup env variable 
+	- add path: touch ~/.bashrc; open ~/.bashrc
+	- save config: source ~/.bashrc
