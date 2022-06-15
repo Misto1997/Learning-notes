@@ -10,7 +10,7 @@
 			- Apache DRILL:
 				- allow you to write SQL queries and can talks NoSQL DB like HBASE, Cassandra or MongoDB.	
 
-			- HUE:
+			- HUE(Hadoop User Experience):
 				- you can write interactive queries works with HIVE and HBASE.
 
 			- Apache PHOENIX:
@@ -22,7 +22,7 @@
 
 		2.	Core Hadoop EcoSystem: HDFS, YARN and MapReduce comes with Hadoop and rest are built top of it over the time.
 			- HDFS(Hadoop Distributed File System):
-				- Data get's splits into smaller chunks of data and distributed across cluter(more than 1 server) with multiple replication factor to make it fault tolerance.
+				- Data get's splits into smaller chunks of data and distributed across cluster(more than 1 server) with multiple replication to make it fault tolerance.
 
 			- YARN(Yet Another Resource Negotiator):
 				- it is a system that manages the resource on cluster and decides what tasks to run when etc.
@@ -52,8 +52,7 @@
 				- use cases: handle sql queries on large data, ML processing across cluster, streaming data in realtime.
 
 			- TEZ:
-				- Similar to Spark and MapReduce.
-				- 
+				- Similar to Spark and MapReduce, or you can replacement of both in some cases.
 
 			- Apache HBASE:
 				- NoSQL Database.
@@ -106,7 +105,7 @@
 			- Maintains merged copy of edit log so that you can restore.
 
 		- HDFS Federation:
-			- Each Name node manges a specific namespace volume(sub directories).
+			- Each Name node manages a specific namespace volume(sub directories).
 			- if one Name node is down, rest will be still working.
 
 		- HDFS High Availability(Preffered):
@@ -141,4 +140,84 @@
 		- 
 
 6. Spark: 
-		- 
+			- 
+
+
+
+7. Hive:
+	- It provides data using Distributed SQL queries with hadoop cluster.
+
+	- One can write SQL(HiveQL) queries and HIVE converts these queries to MapReduce or Tez job which runs on Hadoop YARN.
+
+	- It is highly scalable and designed to work with big data.
+
+	- It is highly extensible, you can use different way to connect to HIVE
+		- User defined functions
+		- Thrift Server
+		- JDBC/ODBC driver
+
+	- But it has its own limitations:
+		- it is designed for OLAP(Online analytical processing) and not for  OLTP(Online transaction processing).
+		- Stores data in denormalized form(flat text files).
+		- limited SQL syntaxed queries only, cannot perform much complex work.
+		- No transactions
+		- No records level updates, delete, inserts
+
+	- How Hive works:
+		- Hive maintains a Metastore that stores the schema structure we have defined on a unstructed flat file data stored on HDFS.(it is also called schema on read i.e apply schema while reading unstructured data)
+			- mysql like  DB provided schema on write i.e apply schema while storing data.
+		- It has 2 kind of tables
+			1. Managed table:
+				- Hive manges such tables and moves data from Distributed file system to hive itself and if we remove it from hive, its gone, you cannot access it anymore.
+
+			2. External table:
+				- You define External command with your create query which doesn't move but copies data from file system to hive and if you delete it from hive, it will be still there in your file system.
+
+		- you can define parititions if possible to optimize the processing.
+
+	- 
+
+
+8. YARN:
+	- It separates the problem of managing resources on your cluster from MapReduce.
+
+	- Enables development of MapReduce alternatives(Spark/Tez) built on top of YARN.
+
+	- where Yarn fits:
+		- MapReduce/Spark/Tez job(YARN applications) -> submits jobs to YARN(cluster compute layer) -> manages and runs job on HDFS(cluster storage layer).
+
+	- How Yarn works:
+		- Our application(MapReduce/Tez/Spark) talks to Resource Manager(YARN) to distribute the work to the cluster.
+		- One can  define data locality i.e which HDFS block user wants to process.
+			- YARN will try to get your process on the same node where your HDFS block resides.
+		- You can define different scheduling options for your application:
+			- One can run more than one application at once on their cluster.
+			- 3 types of scheduling available:
+				- FIFO(First In First Out)
+					- it runs job in sequence.
+				- Capacity
+					- it may run parallel jobs if cluster has capacity available.
+				- Fair Scheduler
+					- it cuts down long running jobs resources and try to accomodate for small jobs.
+
+	- 
+
+
+9. Tez:
+	- It is an application framework, client(Hive/Pig) can code against as a replacement to MapReduce.
+
+	- Usually Hive/Pig uses MapReduce under the hood but you can configure them to use TEZ which is much faster than MapReduce.
+
+	- It Constructs DAG(Directed Acyclic Graph) for more efficient processing of distributed jobs.
+
+	- It Relies om more holistic  view of your job i.e eliminates unnecessary steps and dependencies.
+
+	- Optimize physical data flow and resource usage.  
+
+10. Hue:
+	- Hortonworks and Cloudera are two org that provides commercial supported Hadoop distribution, hortonworks proivdes Ambari as UI, querying and management tool and Cloudera provides HUI as UI and querying.
+
+	-  
+
+11. Pig:
+	- 

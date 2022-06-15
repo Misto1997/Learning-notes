@@ -19,4 +19,24 @@
 7.	Descript a Consumer group:
 	- kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group <group-name>
 
-8.	
+8.	check if zookeeper is running or not(requires netcat installed)
+	- telnet <zookeeper ip> 2181
+	- echo stat | nc <zookeeper ip> 2181
+
+9. check if kafka is running and registered to zookeeper(requires netcat installed)
+	- echo dump | nc <zookeeper ip> 2181 | grep brokers
+
+10. list down kafka topics available on cluster
+	- bin/kafka-topics.sh --list --zookeeper <zookeeper ip>:2181
+
+11. describe topic details
+	- bin/kafka-topics.sh --bootstrap-server=localhost:9092 --describe --topic users.registrations
+
+12. find current consumer offset
+	- kafka-consumer-groups.sh --bootstrap-server <kafkahost:port> --group <group_id> --describe
+
+13. change consumer offset to earliest(oldest)/latest(recent)
+	- kafka-consumer-groups.sh --bootstrap-server kafka-host:9092 --group my-group --reset-offsets --to-earliest --topic sales_topic --execute
+
+14. change consumer offset by number(add - if you want go before perticular number)
+	- kafka-consumer-groups.sh --bootstrap-server kafka-host:9092 --group my-group --reset-offsets --shift-by 10 --topic sales_topic --execute

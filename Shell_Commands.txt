@@ -1,0 +1,257 @@
+1. Related to Files/Directories:
+	* Copy files from current directory to destination
+		-	cp /<current path> /<destination path>
+
+	* Move files from current directory to destination
+		-	mv /<current path> /<destination path>
+
+	* Download file from server to local machine
+		-	scp -r -i <path to private key> username@ip:/path/to/file /path/to/download/location
+		or
+		-	scp username@ip:/path/to/file /path/of/download/location
+
+	* Upload file from local machine to server
+		-	sudo scp -r -i <path to private key>  /path/to/file username@ip:/path/to/upload/location
+		or
+		-	scp /path/to/file username@ip:/path/to/upload/location
+
+	* Open file to view
+		-	cat <filename>
+
+	* File Editing
+		* Edit current file in path
+			-	vi <filename> or vim <filename>
+			-	:q! to terminate and :wq to save
+
+		* To start editing
+			-	i
+
+		* To start end of line where cursor is
+			- 	A
+
+		* Terminate insert mode
+			- esc key
+
+		* Undo last changes
+			-	u
+
+		* Delete line
+			-	dd
+
+		* Delete next 3 line
+			-	3dd
+
+		* Delete contents of line after the cursor
+			-	D
+
+		* Goto last line
+			-	shift + g
+
+		* 
+
+	* File/Directory deletion:
+		* delete files in directory
+			-	rm /<path>
+
+		* delete a directory with files inside it
+			-	rm -rf /<path>
+
+		*
+
+	* File/Directory creation
+		* to create file:
+			-	touch <file-name>
+
+		* to create a directory:
+			-	mkdir <directory-name>
+
+		* 
+
+	* Word/File/Directory searching
+		* search word inside a file
+			-	grep 'word' <filename>
+
+		* search word with vi/vim:
+			- 	esc -> ?<word> -> enter -> n(for backward) and N(for forward)
+
+		* find a file in system:
+			-	find / -iname "<search_regex>"
+
+	* File Details
+		* list files in current directory
+			-	ls
+
+		* list all files including hidden files
+			-	ls -a
+
+		* list all files including sub directory files
+			-	ls -R
+
+		* list files with details
+			-	ls -al
+
+	* Directory switching
+		* check current path
+			-	pwd
+
+		* switch to another directory
+			-	cd <path>
+
+		* go back to previous directory
+			-	cd ..
+
+		* go back to home directory
+			-	cd
+
+	* File extraction and compression
+
+		* compress directory
+			-	tar -czvf name-of-archive.tar.gz /path/to/directory-or-file
+
+		* extract file
+			-	tar -xvzf name-of-archive.tar.gz
+
+		* unjar file
+			-	jar xf <filename.jar>
+
+
+	* Miscellaneous related to file:
+		* find process related to your file
+			-	ps aux | grep <filename>
+
+		* get file size in KB
+			-	ls -sh <filename>
+
+		* to allow r(read), w(write), x(execute) for a file
+			-	chmod +<access-type> <filename>
+				-	ex: chmod +r test.txt
+			or
+			-	chmod 777 test.txt
+				-	here 777 reprents three types i.e ugo(user-group-others) and numbers can range from 0-7
+					- 0 = nothing
+					- 1 = execute
+					- 2 = write
+					- 3 = execute + write
+					- 4 = read
+					- 5 = read + execute
+					- 6 = read + write
+					- 7 = read + write + execute
+
+
+
+2. Related to process/service:
+	
+	* To start/stop/restart/status service:
+		-	sudo systemctl stop/start/restart/status <serviceName>
+
+	* Check which all services are running:
+		-	systemctl list-units --type=service
+
+	* To check system memory usage
+		-	watch -n 5 free -m
+
+	* Get memory used by process:
+		-	sudo pmap <pid> | tail -n 1
+		or
+		-   cat /proc/<pid>/smaps | grep -i pss |  awk '{Total+=$2} END {print Total/1024" MB"}'
+
+	* Run process(jenkins in example) with different port
+ 		-	java -jar jenkins.war --httpPort=<port>
+
+ 	* Get process running on specific port
+		-	lsof -i tcp:<port>
+
+	* Check logs of nohup
+		-	tail -100f nohup.out
+
+	* To get your IP
+		-	ipconfig getifaddr en0
+		or
+		-	hostname -i
+
+	* dpkg
+		* List all installed packages
+			-	dpkg -l
+
+		* Check for perticular package
+			-	dpkg -l <package-name>
+
+		* Check installed package location
+			-	dpkg -L <package-name>
+
+		* remove package
+			-	dpkg -p <package-name>
+
+		* 
+
+    * Kill a process
+    	- kill -9 <pid>
+
+
+3. Related to SSH:
+	
+	* connect to remote PC(ex. ec2 instance) via ssh
+		-	ssh -i <private key> <username>@<ip>
+		or
+		-	ssh <ip>
+
+	* to remove host from your know host list:
+		-	ssh-keygen -R hostname
+
+	* 
+
+4. Related to env. and user
+	
+	* To check all env.
+		-	env
+
+	* Setup env variable 
+		-	add path to: ~/.bash_profile and ~/.zshrc
+		-	save config: source ~/.bash_profile  and source ~/.zshrc
+
+	* Create shell variable:
+		-	VARIABLE_NAME=<value>
+
+	* Create env variable
+		-	export VARIABLE_NAME=<value>
+
+	* Export shell variable to environment variable
+		-	export VARIABLE_NAME
+
+	* Remove env. variable
+		-	export -n VARIABLE_NAME
+
+	* Remove shell/env variable
+		-	unset VARIABLE_NAME
+
+	* Check user history
+		-	cat /home/<username>/.bash_history
+
+	* run session with root user
+		-	sudo su
+
+	* List of all past commands typed in the current terminal session
+		-	history
+
+	* 
+
+5. Related to disk
+
+	* To check disk space:
+		-	df
+
+	* To check disk space in MB/GB:
+		-	df -h
+
+	* Check disk space for specific file:
+		-	df -h /dev/sda2
+
+	* List all storage blocks
+		- lsblk
+
+	* 
+
+6. 
+
+
+
