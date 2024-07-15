@@ -1,42 +1,64 @@
-1.	Start Zookeeper:
-	- zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties
+1.	Related to Zookeeper:
+	* Start Zookeeper:
+		-	zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties
 
-2.	Start Kafka:
-	- kafka-server-start /usr/local/etc/kafka/server.properties
+	* Check if zookeeper is running or not(requires netcat installed)
+		-	telnet <zookeeper ip> 2181
+		or
+		-	echo stat | nc <zookeeper ip> 2181
 
-3.	Create Kafka Topic:
-	- kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+	* Check which zookeeper is leader or follower
+		-	echo stat | nc ZOOKEEPER_IP ZOOKEEPER PORT | grep Mode
 
-4.	Initialize Producer console:
-	- kafka-console-producer --broker-list localhost:9092 --topic test
+2.	Related to Kafka:
+	* Start Kafka
+		-	kafka-server-start /usr/local/etc/kafka/server.properties
 
-5.	Initialize Consumer console:
-	- kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
+	* Check if kafka is running and registered to zookeeper(requires netcat installed)
+		-	echo dump | nc <zookeeper_ip> 2181 | grep brokers
 
-6.	List down Consumer groups:
-	- kafka-consumer-groups --bootstrap-server localhost:9092 --list
+3.	Related to Topic:
+	* Create Kafka Topic:
+		-	kafka-topics --create --zookeeper <zookeeper_ip:2181> --replication-factor 1 --partitions 1 --topic <topic-name>
 
-7.	Descript a Consumer group:
-	- kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group <group-name>
+	* List down kafka topics available on cluster:
+		-	bin/kafka-topics.sh --list --zookeeper <zookeeper_ip:2181>
 
-8.	check if zookeeper is running or not(requires netcat installed)
-	- telnet <zookeeper ip> 2181
-	- echo stat | nc <zookeeper ip> 2181
+	* Describe topic details:
+		-	bin/kafka-topics.sh --bootstrap-server <kafka_host:port> --describe --topic <topic-name>
 
-9. check if kafka is running and registered to zookeeper(requires netcat installed)
-	- echo dump | nc <zookeeper ip> 2181 | grep brokers
+	* Delete a topic:
+		-	bin/kafka-topics.sh --bootstrap-server <kafka_host:port> --topic <topic-name> --delete
 
-10. list down kafka topics available on cluster
-	- bin/kafka-topics.sh --list --zookeeper <zookeeper ip>:2181
+4. Related to Consumer:
+	* Initialize Consumer console for a topic:
+		-	kafka-console-consumer --bootstrap-server <kafka_host:port> --topic <topic-name> --from-beginning
 
-11. describe topic details
-	- bin/kafka-topics.sh --bootstrap-server=localhost:9092 --describe --topic users.registrations
+	* Initialize Consumer console for a topic with consumer group:
+		-	kafka-console-consumer --bootstrap-server <kafka_host:port> --topic <topic-name> --from-beginning --group <consumer-group-name>
+	
 
-12. find current consumer offset
-	- kafka-consumer-groups.sh --bootstrap-server <kafkahost:port> --group <group_id> --describe
+5. Related to Consumer Group:
+	* List down Consumer groups:
+		-	kafka-consumer-groups --bootstrap-server <kafka_host:port> --list
 
-13. change consumer offset to earliest(oldest)/latest(recent)
-	- kafka-consumer-groups.sh --bootstrap-server kafka-host:9092 --group my-group --reset-offsets --to-earliest --topic sales_topic --execute
+	* Descript a Consumer group:
+		-	kafka-consumer-groups --bootstrap-server <kafka_host:port> --describe --group <group-name>
 
-14. change consumer offset by number(add - if you want go before perticular number)
-	- kafka-consumer-groups.sh --bootstrap-server kafka-host:9092 --group my-group --reset-offsets --shift-by 10 --topic sales_topic --execute
+	* Find current consumer offset
+		-	kafka-consumer-groups.sh --bootstrap-server <kafka_host:port> --group <group_id> --describe
+
+	* Change consumer offset to earliest(oldest)/latest(recent)
+		-	kafka-consumer-groups.sh --bootstrap-server <kafka_host:port> --group my-group --reset-offsets --to-earliest --topic sales_topic --execute
+
+	* Change consumer offset by number(add - if you want go before perticular number)
+		-	kafka-consumer-groups.sh --bootstrap-server <kafka_host:port> --group my-group --reset-offsets --shift-by 10 --topic sales_topic --execute
+
+6. Related to Procuder:
+	* Initialize Producer console for a topic:
+		-	kafka-console-producer --bootstrap-server <kafka_host:port> --topic <topic-name>
+
+	* Initialize Producer console for a topic with some properties:
+		-	kafka-console-producer --bootstrap-server <kafka_host:port> --topic <topic-name> --producer-property acks=all
+
+	* 	

@@ -1,0 +1,32 @@
+1. It modifies your terminal to be more productive
+
+2. installation: https://github.com/ohmyzsh/ohmyzsh#basic-installation
+
+3. top on my zsh plugins: https://www.youtube.com/watch?v=LEOqiyxx16c
+
+plugins:
+	1. zsh-autosuggestions: it gives you auto suggestion hints based on history(press up key)
+		- install it and add "zsh-autosuggestions" to plugins: https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+
+	2. sudo: press esc key 2 times and it addes sudo in front of query automatically
+		- add "sudo" to plugins
+
+	3. copyfile: it copies file contents from terminal to clipboard
+		- type: copyfile <filename> and it copies file content
+		- add "copyfile" to plugins
+
+	4. dirhistory: saves directory history to help you move up and down in directory easily
+		- https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/dirhistory/README.md
+		- option + left key to go back 
+		- option + right key to go forward
+		- add "dirhistory" to plugins
+
+	5. jsontools: helps you with json related commands like print readable json with curl on terminal
+		- https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools
+		- example: curl "url" | pp_json   to get pretty json
+		- is_json < data.json    to check if json is valid or not
+		- 
+		- add "jsontools" to plugins
+
+
+

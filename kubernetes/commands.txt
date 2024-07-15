@@ -1,0 +1,50 @@
+1. Get all objects
+	-> kubectl get all --kubeconfig <path-config-file> -n <namespace>
+
+2. Get all pods
+	-> kubectl get pods --kubeconfig <path-config-file> -n <namespace>
+
+3. Get all services
+	-> kubectl get services --kubeconfig <path-config-file> -n <namespace>
+
+4. Get deployments/rollout object
+	-> kubectl get rollout --kubeconfig <path-config-file> -n <namespace>
+
+5. Get detailed info about pods
+	-> kubectl describe pods --kubeconfig <path-config-file> -n <namespace>
+
+6. Get k8s events
+	-> kubectl get events --kubeconfig <path-config-file> -n <namespace>
+
+7. Check Logs
+	-> kubectl logs <pod-name> -c  <container-name> -n <namespace> --tail=10
+
+8. Copy file between container and local
+	-> kubectl cp <pod-name>:<pod-file-path> <local-file-path> -n <name-space> -c <container name>
+
+9. For copying from local to container:
+	-> kubectl cp <local-file-path>  <pod-name>:<pod-file-path> -n <name-space> -c <container name>
+
+10. Scaling Pods
+	-> kubectl scale rollout/<rollout-object-name> --replicas=<num-replicas-required> --kubeconfig <kubeconfig-path> -n <namespace>
+
+
+11. Taking Thread Dump
+	-> jstack <pid> > <file_location> 
+
+12. Check Live GC activity
+	-> jstat -gcutil  <pid>  <frequency in ms> 
+
+13. delete resource from k8's
+	-> kubePlay -n fdp-plato-ai-playground delete replicaset <id>
+
+14. loggin in k8's pod:
+	-> kubectl --kubeconfig <path-config-file> exec -n <nameSpace> -it <podName> -- /bin/sh
+
+
+
+
+kubePlay -n fdp-plato-ai-playground cp /Users/rahul.rana1/Documents/work/fdp-plato-ai/app_v1/db-faiss/ plato-ai-766dcc7698-znczj:/app_v1/app_v1/
+
+
+grep "function_name" /var/lib -r

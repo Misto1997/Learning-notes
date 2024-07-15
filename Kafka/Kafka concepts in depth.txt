@@ -146,6 +146,30 @@
 			- Batch size is allocated per partition.
 
 
-13.	
+13.	Partition rebalancing strategies(partition.assignment.strategy):
+		- Eager rebalance(Default in kafka):
+			- When a new consumer joins a consumer group, all consumers in that consumer group stops consuming messages and gives up their membership of partition.
+			- All consumers along with new one rejoins the consumer group and gets a new partition assignment.
+			- Cons:
+				- During a short period of time, no consumer is consuming any messages in that Consumer group.
+				- All consumer will gets parition again and no gaurantees that a consumer will get old partition.
+			- 3 Eager partition.assignment.strategy values:
+				- RangeAssignor(default): assign partitions on a per topic basis
+				- RoundRobin: assign partitions across all topics in round robin fashion
+				- StickyAssignor: balanced like round robin, minimise the partition movements when consumer joins/leaves the group
+
+		- Cooperative rebalance(Incremental rebalance):
+			- Only small subset of partition is reassigned from one consumer to another.
+			- Other consumers can still consume message unintruppted.
+			- 1 Eager partition.assignment.strategy values:
+				- CooperativeStickyAssignor: same as StickyAssignor but supports cooperative rebalance.
+
+14. Producer Buffer setting:
+		- If Broker is not able to catch up the with the speed at which producer is producing the data then your data will be stored in buffered memory(producer side) for time being Broker is busy and that is by default 32MB.
+		- you can increase buffer memory with buffer.memory=<size>.
+		- If Buffer is full than you will notice lag in .send() method or may be blocked.
+		- Once message is blocked than "max.block.ms" comes into picture i.e how long producer is going to wait until it throws error for that message.
+
+15. 
 
 			

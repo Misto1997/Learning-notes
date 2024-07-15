@@ -1,0 +1,17 @@
+1. Tokens:
+	- Text generation and embeddings models process text in chunks called tokens. Tokens represent commonly occurring sequences of characters.
+	- For example, the string " tokenization" is decomposed as " token" and "ization", while a short and common word like " the" is represented as a single token. 
+	- As a rough rule of thumb, 1 token is approximately 4 characters or 0.75 words for English text.
+
+2. Embeddings:
+	- An embedding is a vector representation of a piece of data (e.g. some text) that is meant to preserve aspects of its content and/or its meaning.
+	- Chunks of data that are similar in some way will tend to have embeddings that are closer together than unrelated data.
+	- 
+
+
+3. fine tuning vs custom gpt
+	- Fine-tuning is giving new knowledge to an AI by retraining it. You feed it new data that will now be part of the AI, therefore changing the core of that specific AI. Just like if you read book - it’s somewhere in your brain.
+
+	- Custom GPTS instead are all based on the same AI model that remains unaltered. You just give the GPT instructions and documents, they can be modified at anytime to update the GPT to your convenience. Like a human wearing a pair of glasses, it changes the way it sees the world, but not the person itself.
+
+4. 

@@ -50,4 +50,50 @@
 						 the service remains completely in dark about how the low-level operations to access the database is 
 						 done. This is known as the principle of Separation of Logic.
 						
-4	
+4. Inheritance vs Composition:
+	- Inheritance: when a child class inherits from a parent class, the child acquires all behaviors from the parent. Inheritance will make a class hierarchy.
+		-eg:
+			interface Animal { 
+			   func poop() { }
+			}
+			class Dog: Animal {
+			   func bark() { }
+			}
+			class Cat: Animal { 
+			   func meow() { }
+			}
+			let animals: [Animal] = [Dog(), Cat()]
+
+		- Here Animal is parent, dog and cat inherit from it poop() method and they have bark() and meow() method respectively.
+
+	- drawback: 
+		- It makes code tightly coupled.
+		- In future if there are 10 of such child class and we want to change some functionality in 5-6 class then either we need to make changes in parent class and keep some error handly case for those who are not using it or implement in each class.
+
+	- Composition: it enables the creation of complex types by combining objects (components) of other types, rather than inheriting from a base or parent class.
+		-eg:
+			class Poopale {
+			   func poop()
+			}
+			class Barkable { 
+			   func bark() 
+			}
+			class Meowable {
+			   func meow()
+			}
+			class Dog: Poopable, Barkable {
+			   var barker: Barkable
+			   var pooper: Poopable 
+			   func bark() { barker.bark() }
+			   func poop() { pooper.poop() }
+			}
+			...
+			typealias Animal = Poopable & ... // and any behaviors
+			let animales: [Animal] = [Dog(), Cat()]
+
+		- here poop(), bark(), meow() all are individual class/behaviour and any class can use it as they want independently.
+
+		- pros over inheritance:
+			- It makes code loosely coupled
+			- whether there are 10 or 100 class are there they can use these class independetly and we an add/modify behaviour anytime without affecting any class.
+			

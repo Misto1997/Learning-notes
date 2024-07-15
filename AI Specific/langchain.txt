@@ -1,0 +1,23 @@
+1. Langchain is an open source framework that allows Developers to combine LLM(Large Language Models) like GTP-4 with external source of computation and data. https://python.langchain.com/docs/get_started/introduction
+
+2. Example: we can ask ChatGPT anything and it will answer based on its General Knowledge but what if you want to ingest and use your documents as reference so that ChatGPT can be used for your usecase?
+	-> You need to store your data in vectorStore, here embeddings comes into picture. Embeddings is nothing but breaking your text data into number vectore and store in DB which supports vectors storage like faiss, redis.
+
+	-> A user asks a question, this question sends to Language Model(GPT-4) and using embeddings a vector search is being done for relevance search.
+
+	-> Now Language Model has intial question and relevant information from relevance search and with it it provides an answer but note that this answer can be hallucinated answer also.
+
+	->
+
+3. The most common and most important chain that LangChain helps create contains three things:
+
+	-> LLM: The language model is the core reasoning engine here. In order to work with LangChain, you need to understand the different types of language models(GTP-4, BERT etc) and how to work with them.
+
+	-> Prompt Templates: This provides instructions to the language model. This controls what the language model outputs, so understanding how to construct prompts and different prompting strategies is crucial.
+
+	->Output Parsers: These translate the raw response from the LLM to a more workable format, making it easy to use the output downstream.
+
+4. Agents:
+	-> for example you are using any tool(lets say you are using API's to get some information, here API is a tool), now language model(gpt-4) needs to know this information in order to generate relevant information, now here Agent helps in way to allow LLM to intract with these tools.
+
+5. 

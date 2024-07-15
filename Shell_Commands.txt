@@ -47,7 +47,11 @@
 		* Goto last line
 			-	shift + g
 
-		* 
+		* delete last word in terminal
+			- ctrl + w
+
+		* Column select(for sublime)
+			- option + mouse scroll
 
 	* File/Directory deletion:
 		* delete files in directory
@@ -113,6 +117,25 @@
 
 		* unjar file
 			-	jar xf <filename.jar>
+
+	* find files:
+		* find files older than  x days
+			-	find /<path> -type f -mtime +<number of days>
+
+		* delete file older than x days
+			-	find /<path> -type f -mtime +<number of days> -delete
+
+		* find file with specific extention older than x days
+			- find /<path> -name "*.log" -type f -mtime +<number of days>
+
+		* find directory older than x days
+			- find /<path> -type d -mtime +<number of days>
+
+		* delete directory older than x days
+			- find /<path> -type d -mtime +<number of days> -exec rm -rf {} \;
+
+
+
 
 
 	* Miscellaneous related to file:
@@ -187,6 +210,29 @@
     * Kill a process
     	- kill -9 <pid>
 
+    * Search recent ran queries on machine
+    	- ctrl + r and then search for any related key
+
+    * install package
+    	-	apt-get install <package-name>
+
+    * uninstall package with files
+    	-	apt-get purge <package-name>
+
+    * Thread related
+
+    	* Take thread dump of a process
+    		- jstack -l <pid>
+
+    	* number of threads for a given pid
+    		- ps -o nlwp <pid>
+
+    	* to monitor the thread count
+    		- watch ps -o thcount <pid>
+
+    	* To get the sum of all threads running in the system
+    		- ps -eo nlwp | tail -n +2 | awk '{ num_threads += $1 } END { print num_threads }'
+
 
 3. Related to SSH:
 	
@@ -251,7 +297,11 @@
 
 	* 
 
-6. 
+6. check system uptime:
+	* uptime -s
+
+7. get cpu utlisation in last x seconds:
+	* sar -u 1 1800
 
 
 

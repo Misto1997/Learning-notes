@@ -105,3 +105,19 @@
 	-git stash list	: to check saved content list
 	-git stash pop	:to get saved data back
 	-git stash apply	:to get saved data and it also remains at saved list
+
+21 Maven dependency tree:
+	- to check dependency tree
+		-mvn dependency:tree
+
+	- to check redundant dependency tree
+		- mvn dependency:tree -Dverbose                                                  
+
+	to check redundant dependency for specific module
+		- mvn -pl <module-name> -am  dependency:tree -Dverbose
+
+22. set upstream
+	- git remote add upstream <git-repo-url>
+ 
+
+

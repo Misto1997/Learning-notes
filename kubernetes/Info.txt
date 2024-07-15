@@ -1,0 +1,22 @@
+Information:
+
+1. kubernetese is a open source orchestration tool/framework.
+
+2. Kubernetese Architecture:
+	-> Control Pane: it is master node and atleast one master node has to be there, kubernetes run multiple services here to manager whole cluster.
+		-> API Server: It is the entry point to K8's cluster and client talks to k8's cluster components via API Server.
+
+		-> Controller Manager: Manages the cluster and monitors various aspects like container is working or not, a new container has to be spawned.
+
+		-> Scheduler: Schedules pods/container placement on nodes based on cluster resources availability.
+
+		-> etcd: it is a key:value storage and holds the current state of k8's cluster, consider it as meta store. it stores configs and status data of nodes. one can recover whole cluster with etcd snapshot.
+
+	-> Worker Nodes: it performs tasks(our applications runs on it) and kubelet process is running on it.
+		-> kubelet: it is a kubernetes process and it helps cluster for communication and execute some task within nodes.
+
+	-> Node: Node can be considered as equivalent to VM.
+		-> in each Node multiple pods/containers are running.
+
+3. Conponents of K8's:
+	-> 

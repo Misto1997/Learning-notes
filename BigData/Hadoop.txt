@@ -90,7 +90,7 @@
 
 	- Example:
 		- Reading a file:
-			-"Application(Client Node)"" asks "Name Node" to access xyz file and "Name node" return's address to "Data nodes" which will have xyz file and then "Client Node" will intract with Data Node.
+			-"Application(Client Node)" asks "Name Node" to access xyz file and "Name node" return's address to "Data nodes" which will have xyz file and then "Client Node" will intract with Data Node.
 
 		- Writing a file:
 
